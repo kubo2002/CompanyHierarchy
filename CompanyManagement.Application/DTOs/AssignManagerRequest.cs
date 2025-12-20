@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CompanyManagement.Application.DTOs
+﻿namespace CompanyManagement.Application.DTOs
 {
     public class AssignManagerRequest
     {

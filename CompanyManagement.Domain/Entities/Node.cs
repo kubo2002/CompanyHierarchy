@@ -51,7 +51,7 @@ namespace CompanyManagement.Domain.Entities
         /// Priradi uzlu veduceho.
         /// </summary>
         /// <param name="employeeId">Unikatne ID zamestnanca.</param>
-        public void AssignLeader(Guid employeeId)
+        public void AssignLeader(Guid? employeeId)
         {
             LeaderEmployeeId = employeeId;
         }
