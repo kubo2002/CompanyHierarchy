@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CompanyManagement.Domain.Entities;
 
 namespace CompanyManagement.Application.Abstractions.Repositories
 {
     public interface INodeRepository
     {
+        Task AddAsync(Node node);
+        Task<Node?> GetByIdAsync(Guid id);
     }
 }
