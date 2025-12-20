@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="CompanyManagement.Application/CompanyManagement.Application.csproj" />
+  <Project Path="CompanyManagement.Domain/CompanyManagement.Domain.csproj" />
+  <Project Path="CompanyManagement.Infrastructure/CompanyManagement.Infrastructure.csproj" />
+  <Project Path="CompanyManagement/CompanyManagement.Api.csproj" />
+  <Project Path="Tests/Tests.csproj" />
+</Solution>
