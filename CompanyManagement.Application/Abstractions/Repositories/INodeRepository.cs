@@ -13,5 +13,7 @@ namespace CompanyManagement.Application.Abstractions.Repositories
         // členstvo zamestnancov
         Task<bool> IsEmployeeAssignedToNodeAsync(Guid nodeId, Guid employeeId);
         Task AssignEmployeeToNodeAsync(Guid nodeId, Guid employeeId);
+        Task RemoveEmployeeFromNodeAsync(Guid nodeId, Guid employeeId);
+
     }
 }
