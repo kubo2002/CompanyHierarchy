@@ -81,21 +81,14 @@ namespace Tests.Application
             };
 
             // Act & Assert
-            await Assert.ThrowsAsync<ArgumentException>(
-                () => useCase.ExecuteAsync(request)
-            );
+            await Assert.ThrowsAsync<ArgumentException>(() => useCase.ExecuteAsync(request));
         }
 
         [Fact]
         public async Task ExecuteAsync_Should_Throw_When_Employee_Does_Not_Exist()
         {
             // Arrange
-            var node = new Node(
-                Guid.NewGuid(),
-                "HR",
-                "HR",
-                NodeType.Department,
-                null);
+            var node = new Node(Guid.NewGuid(),"HR","HR",NodeType.Department,null);
 
             var nodeRepoMock = new Mock<INodeRepository>();
             var employeeRepoMock = new Mock<IEmployeeRepository>();
@@ -115,9 +108,48 @@ namespace Tests.Application
             };
 
             // Act & Assert
-            await Assert.ThrowsAsync<ArgumentException>(
-                () => useCase.ExecuteAsync(request)
-            );
+            await Assert.ThrowsAsync<ArgumentException>(() => useCase.ExecuteAsync(request));
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_Should_Throw_When_Employee_Already_Manages_Node()
+        {
+            // Arrange
+            var employeeId = Guid.NewGuid();
+
+            var existingNode = new Node(Guid.NewGuid(),"Division A","DIV-A",NodeType.Division,null);
+
+            existingNode.AssignLeader(employeeId);
+
+            var targetNode = new Node(Guid.NewGuid(), "Project X", "PRJ-X", NodeType.Project, existingNode.Id);
+
+            var nodeRepoMock = new Mock<INodeRepository>();
+            var employeeRepoMock = new Mock<IEmployeeRepository>();
+
+            nodeRepoMock
+                .Setup(r => r.GetByIdAsync(targetNode.Id))
+                .ReturnsAsync(targetNode);
+
+            nodeRepoMock
+                .Setup(r => r.GetNodeManagedByEmployeeAsync(employeeId))
+                .ReturnsAsync(existingNode);
+
+            employeeRepoMock
+                .Setup(r => r.GetByIdAsync(employeeId))
+                .ReturnsAsync(new Employee(
+                    employeeId, "Jakub", "Gubany", "j@g.com", "123"));
+
+            var useCase = new AssignManagerToNode(
+                nodeRepoMock.Object,
+                employeeRepoMock.Object);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(
+                () => useCase.ExecuteAsync(new AssignManagerRequest
+                {
+                    NodeId = targetNode.Id,
+                    EmployeeId = employeeId
+                }));
         }
     }
 }

@@ -39,8 +39,14 @@ namespace CompanyManagement.Application.UseCases
             if (employee is null)
                 throw new ArgumentException("Employee not found");
 
-            node.AssignLeader(employee.Id);
+            var alreadyManagedNode = await _nodeRepository.GetNodeManagedByEmployeeAsync(employee.Id);
 
+            if (alreadyManagedNode != null)
+            {
+                throw new InvalidOperationException("Employee is already manager of another node");
+            }
+
+            node.AssignLeader(employee.Id);
             await _nodeRepository.UpdateAsync(node);
         }
     }
