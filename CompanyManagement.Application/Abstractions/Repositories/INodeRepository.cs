@@ -6,5 +6,6 @@ namespace CompanyManagement.Application.Abstractions.Repositories
     {
         Task AddAsync(Node node);
         Task<Node?> GetByIdAsync(Guid id);
+        Task UpdateAsync(Node node);
     }
 }

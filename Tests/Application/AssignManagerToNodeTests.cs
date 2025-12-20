@@ -1,0 +1,123 @@
+﻿using CompanyManagement.Application.Abstractions.Repositories;
+using CompanyManagement.Application.DTOs;
+using CompanyManagement.Application.UseCases;
+using CompanyManagement.Domain.Entities;
+using CompanyManagement.Domain.Enums;
+using Moq;
+
+namespace Tests.Application
+{
+    public class AssignManagerToNodeTests
+    {
+        [Fact]
+        public async Task ExecuteAsync_Should_Assign_Manager_To_Node()
+        {
+            // Arrange
+            var nodeId = Guid.NewGuid();
+            var employeeId = Guid.NewGuid();
+
+            var node = new Node(
+                nodeId,
+                "IT Divizia",
+                "IT",
+                NodeType.Division,
+                null);
+
+            var employee = new Employee(
+                employeeId,
+                "Jakub",
+                "Gubany",
+                "jakub@test.com",
+                "123");
+
+            var nodeRepoMock = new Mock<INodeRepository>();
+            var employeeRepoMock = new Mock<IEmployeeRepository>();
+
+            nodeRepoMock
+                .Setup(r => r.GetByIdAsync(nodeId))
+                .ReturnsAsync(node);
+
+            employeeRepoMock
+                .Setup(r => r.GetByIdAsync(employeeId))
+                .ReturnsAsync(employee);
+
+            var useCase = new AssignManagerToNode(
+                nodeRepoMock.Object,
+                employeeRepoMock.Object);
+
+            var request = new AssignManagerRequest
+            {
+                NodeId = nodeId,
+                EmployeeId = employeeId
+            };
+
+            // Act
+            await useCase.ExecuteAsync(request);
+
+            // Assert
+            Assert.Equal(employeeId, node.LeaderEmployeeId);
+
+            nodeRepoMock.Verify(
+                r => r.UpdateAsync(node),
+                Times.Once);
+        }
+
+
+        [Fact]
+        public async Task ExecuteAsync_Should_Throw_When_Node_Does_Not_Exist()
+        {
+            // Arrange
+            var nodeRepoMock = new Mock<INodeRepository>();
+            var employeeRepoMock = new Mock<IEmployeeRepository>();
+
+            var useCase = new AssignManagerToNode(
+                nodeRepoMock.Object,
+                employeeRepoMock.Object);
+
+            var request = new AssignManagerRequest
+            {
+                NodeId = Guid.NewGuid(),
+                EmployeeId = Guid.NewGuid()
+            };
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(
+                () => useCase.ExecuteAsync(request)
+            );
+        }
+
+        [Fact]
+        public async Task ExecuteAsync_Should_Throw_When_Employee_Does_Not_Exist()
+        {
+            // Arrange
+            var node = new Node(
+                Guid.NewGuid(),
+                "HR",
+                "HR",
+                NodeType.Department,
+                null);
+
+            var nodeRepoMock = new Mock<INodeRepository>();
+            var employeeRepoMock = new Mock<IEmployeeRepository>();
+
+            nodeRepoMock
+                .Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(node);
+
+            var useCase = new AssignManagerToNode(
+                nodeRepoMock.Object,
+                employeeRepoMock.Object);
+
+            var request = new AssignManagerRequest
+            {
+                NodeId = node.Id,
+                EmployeeId = Guid.NewGuid()
+            };
+
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentException>(
+                () => useCase.ExecuteAsync(request)
+            );
+        }
+    }
+}
