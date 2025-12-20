@@ -1,6 +1,7 @@
 ﻿using CompanyManagement.Application.Abstractions.Repositories;
 using CompanyManagement.Application.DTOs;
 using CompanyManagement.Domain.Entities;
+using CompanyManagement.Domain.Enums;
 
 namespace CompanyManagement.Application.UseCases
 {
@@ -35,11 +36,32 @@ namespace CompanyManagement.Application.UseCases
         /// </remarks>
         public async Task<Guid> ExecuteAsync(CreateNodeRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.Name))
+            if (string.IsNullOrWhiteSpace(request.Name)) 
+            {
                 throw new ArgumentException("Node name is required");
-
-            if (string.IsNullOrWhiteSpace(request.Code))
+            }
+             
+            if (string.IsNullOrWhiteSpace(request.Code)) 
+            {
                 throw new ArgumentException("Node code is required");
+            }
+              
+            if (request.Type == NodeType.Company && request.ParentId != null) 
+            {
+                throw new InvalidOperationException("Company node cannot have a parent");
+            }
+
+            if (request.ParentId != null)
+            {
+                var parent = await _nodeRepository.GetByIdAsync(request.ParentId.Value)
+                    ?? throw new ArgumentException("Parent node not found");
+
+                // Department nemôže mať deti, ma len zamestnancov
+                if (parent.Type == NodeType.Department) 
+                {
+                    throw new InvalidOperationException("Department node cannot have children");
+                }
+            }
 
             var node = new Node(
                 Guid.NewGuid(),
