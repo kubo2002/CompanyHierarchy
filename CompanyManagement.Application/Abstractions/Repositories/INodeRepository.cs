@@ -8,9 +8,10 @@ namespace CompanyManagement.Application.Abstractions.Repositories
         Task<Node?> GetByIdAsync(Guid id);
         Task UpdateAsync(Node node);
 
-        /// <summary>
-        /// Gives the node managed by the specified employee.
-        /// </summary>
         Task<Node?> GetNodeManagedByEmployeeAsync(Guid employeeId);
+
+        // členstvo zamestnancov
+        Task<bool> IsEmployeeAssignedToNodeAsync(Guid nodeId, Guid employeeId);
+        Task AssignEmployeeToNodeAsync(Guid nodeId, Guid employeeId);
     }
 }
