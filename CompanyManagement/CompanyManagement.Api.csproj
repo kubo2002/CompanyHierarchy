@@ -12,10 +12,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.11.9" />
+    <PackageReference Include="TeaPie" Version="1.3.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using CompanyManagement.Domain.Enums;
 
-namespace CompanyManagement.Application.DTOs
+namespace CompanyManagement.Application.DTOs.CreateNodeDTO
 {
     public class CreateNodeRequest
     {
