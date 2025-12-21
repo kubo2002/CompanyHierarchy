@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "teapie.tool": {
+      "version": "1.5.0",
+      "commands": [
+        "teapie"
+      ],
+      "rollForward": false
+    }
+  }
+}
