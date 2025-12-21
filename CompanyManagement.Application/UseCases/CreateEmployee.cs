@@ -1,5 +1,5 @@
 ﻿using CompanyManagement.Application.Abstractions.Repositories;
-using CompanyManagement.Application.DTOs;
+using CompanyManagement.Application.DTOs.CreateEmployeeDTO;
 using CompanyManagement.Domain.Entities;
 
 namespace CompanyManagement.Application.UseCases

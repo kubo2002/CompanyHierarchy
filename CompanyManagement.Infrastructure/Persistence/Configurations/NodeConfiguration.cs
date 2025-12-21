@@ -43,22 +43,21 @@ namespace CompanyManagement.Infrastructure.Persistence.Configurations
             /// Konfiguruje volitelny vztah medzi uzlom a jeho veducim zamestnancom.
             /// Po odstraneni veduceho sa odkaz nastavi na null.
             /// </summary>
-            builder.HasOne<Employee>()
-                .WithMany()
+            builder
+                .HasOne(n => n.Leader)
+                .WithMany() // z Employee strany ziadna navigacia
                 .HasForeignKey(n => n.LeaderEmployeeId)
                 .OnDelete(DeleteBehavior.SetNull);
+
 
             /// <summary>
             /// Konfiguruje vztah typu N:M medzi uzlom a zamestnancami.
             /// Vyuziva tabulku DepartmentEmployees ako spojovaciu tabulku.
             /// </summary>
             builder
-                .HasMany<Employee>()
-                .WithMany()
-                .UsingEntity(j =>
-                {
-                    j.ToTable("DepartmentEmployees");
-                });
+                .HasMany(n => n.Employees)
+                .WithMany(e => e.MemberOfNodes)
+                .UsingEntity(j => j.ToTable("DepartmentEmployees"));
 
         }
     }

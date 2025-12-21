@@ -34,5 +34,10 @@ namespace CompanyManagement.Infrastructure.Persistence
         {
 
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ManagementDbContext).Assembly);
+        }
     }
 }

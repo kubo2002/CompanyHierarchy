@@ -1,4 +1,4 @@
-﻿namespace CompanyManagement.Application.DTOs
+﻿namespace CompanyManagement.Application.DTOs.CreateEmployeeDTO
 {
     public class CreateEmployeeRequest
     {

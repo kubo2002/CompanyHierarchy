@@ -36,6 +36,21 @@ builder.Services.AddScoped<RemoveEmployeeFromNode>();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ManagementDbContext>();
+    var conn = db.Database.GetDbConnection();
+
+    Console.WriteLine("=== EF CONNECTION STRING ===");
+    Console.WriteLine(conn.ConnectionString);
+
+    conn.Open();
+    using var cmd = conn.CreateCommand();
+    cmd.CommandText = "SELECT DB_NAME()";
+    Console.WriteLine("=== DB_NAME() ===");
+    Console.WriteLine(cmd.ExecuteScalar());
+}
+
 // Pomocny diagnosticky check – uzitocne pri lokalnom behu alebo Docker-i
 using (var scope = app.Services.CreateScope())
 {
