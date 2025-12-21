@@ -16,6 +16,7 @@ namespace CompanyManagement.Domain.Entities
         public NodeType Type { get; private set; }
         public Guid? ParentId { get; private set; }
         public Guid? LeaderEmployeeId { get; private set; }
+        public ICollection<Employee> Employees { get; } = new List<Employee>();
 
         private Node() { }
 
