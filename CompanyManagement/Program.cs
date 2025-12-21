@@ -1,7 +1,10 @@
+using CompanyManagement.Api.Middleware;
 using CompanyManagement.Application.Abstractions.Repositories;
+using CompanyManagement.Application.UseCases;
 using CompanyManagement.Infrastructure.Persistence;
 using CompanyManagement.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +24,15 @@ builder.Services.AddDbContext<ManagementDbContext>(options => options.UseSqlServ
 // Registracia repository vrstvy (Infrastructure -> Application abstractions)
 builder.Services.AddScoped<INodeRepository, EfNodeRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EfEmployeeRepository>();
+
+// Registracia Use Case-ov z Aplication vrstvy
+builder.Services.AddScoped<CreateNode>();
+builder.Services.AddScoped<CreateEmployee>();
+builder.Services.AddScoped<AssignManagerToNode>();
+builder.Services.AddScoped<UnassignManagerFromNode>();
+builder.Services.AddScoped<AssignEmployeeToNode>();
+builder.Services.AddScoped<RemoveEmployeeFromNode>();
+
 
 var app = builder.Build();
 
@@ -43,7 +55,11 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
+
+// Globalny handler vynimiek
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
