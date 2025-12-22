@@ -64,5 +64,17 @@ namespace CompanyManagement.Domain.Entities
             LeaderEmployeeId = employeeId;
         }
 
+        /// <summary>
+        /// Odstrani priradenie veduceho uzla.
+        /// </summary>
+        public void UnassignLeader()
+        {
+            if (LeaderEmployeeId == null)
+            {
+                return;
+            }
+
+            LeaderEmployeeId = null;
+        }
     }
 }

@@ -66,14 +66,10 @@ namespace CompanyManagement.Infrastructure.Repositories
         /// <returns>True, ak je zamestnanec priradeny, inak false.</returns>
         public async Task<bool> IsEmployeeAssignedToNodeAsync(Guid nodeId, Guid employeeId)
         {
-            var node = await _dbContext.Nodes.Include(n => n.Employees).FirstOrDefaultAsync(n => n.Id == nodeId);
-
-            if (node == null)
-            {
-                return false;
-            }
-          
-            return node.Employees.Any(e => e.Id == employeeId);
+            return await _dbContext.DepartmentEmployees
+                .AnyAsync(de =>
+                    de.NodeId == nodeId &&
+                    de.EmployeeId == employeeId);
         }
 
         /// <summary>
@@ -86,14 +82,14 @@ namespace CompanyManagement.Infrastructure.Repositories
         /// </exception>
         public async Task AssignEmployeeToNodeAsync(Guid nodeId, Guid employeeId)
         {
-            var node = await _dbContext.Nodes.Include(n => n.Employees).FirstOrDefaultAsync(n => n.Id == nodeId)
-                ?? throw new InvalidOperationException("Node not found");
+            _dbContext.DepartmentEmployees.Add(new DepartmentEmployee
+            {
+                NodeId = nodeId,
+                EmployeeId = employeeId
+            });
 
-            var employee = await _dbContext.Employees.FirstOrDefaultAsync(e => e.Id == employeeId)
-                ?? throw new InvalidOperationException("Employee not found");
-
-            node.Employees.Add(employee);
             await _dbContext.SaveChangesAsync();
+          
         }
 
         /// <summary>
@@ -104,23 +100,28 @@ namespace CompanyManagement.Infrastructure.Repositories
         /// <param name="employeeId">Identifikator zamestnanca.</param>
         public async Task RemoveEmployeeFromNodeAsync(Guid nodeId, Guid employeeId)
         {
-            var node = await _dbContext.Nodes.Include(n => n.Employees).FirstOrDefaultAsync(n => n.Id == nodeId);
+            var relation = await _dbContext.DepartmentEmployees.FirstOrDefaultAsync(de =>
+                    de.NodeId == nodeId &&
+                    de.EmployeeId == employeeId);
 
-            if (node == null)
+            if (relation == null)
             {
                 return; 
             }
 
-            var employee = node.Employees.FirstOrDefault(e => e.Id == employeeId);
-
-            if (employee == null) 
-            {
-                return;
-            }
-        
-
-            node.Employees.Remove(employee);
+            _dbContext.DepartmentEmployees.Remove(relation);
             await _dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Kontroleuje, ci je zamestnanec priradeny k aspon jednému oddeleniu v organizacnej strukture.
+        /// </summary>
+        /// <param name="employeeId">ID zamestnanca</param>
+        /// <returns></returns>
+        public async Task<bool> IsEmployeeAssignedToAnyDepartmentAsync(Guid employeeId)
+        {
+            return await _dbContext.DepartmentEmployees
+                .AnyAsync(de => de.EmployeeId == employeeId);
         }
     }
 }

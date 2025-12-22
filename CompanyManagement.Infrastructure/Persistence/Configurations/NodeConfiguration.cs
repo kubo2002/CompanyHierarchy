@@ -48,17 +48,6 @@ namespace CompanyManagement.Infrastructure.Persistence.Configurations
                 .WithMany() // z Employee strany ziadna navigacia
                 .HasForeignKey(n => n.LeaderEmployeeId)
                 .OnDelete(DeleteBehavior.SetNull);
-
-
-            /// <summary>
-            /// Konfiguruje vztah typu N:M medzi uzlom a zamestnancami.
-            /// Vyuziva tabulku DepartmentEmployees ako spojovaciu tabulku.
-            /// </summary>
-            builder
-                .HasMany(n => n.Employees)
-                .WithMany(e => e.MemberOfNodes)
-                .UsingEntity(j => j.ToTable("DepartmentEmployees"));
-
         }
     }
 }

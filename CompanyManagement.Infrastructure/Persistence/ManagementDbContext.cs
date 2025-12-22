@@ -1,4 +1,5 @@
 ﻿using CompanyManagement.Domain.Entities;
+using CompanyManagement.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace CompanyManagement.Infrastructure.Persistence
@@ -22,6 +23,7 @@ namespace CompanyManagement.Infrastructure.Persistence
         /// </summary>
         public DbSet<Employee> Employees => Set<Employee>();
 
+        public DbSet<DepartmentEmployee> DepartmentEmployees => Set<DepartmentEmployee>();
         /// <summary>
         /// Inicializuje novu instanciu databazoveho kontextu
         /// s pouzitim zadanych konfiguracnych moznosti.
@@ -38,6 +40,16 @@ namespace CompanyManagement.Infrastructure.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ManagementDbContext).Assembly);
+
+            modelBuilder.Entity<DepartmentEmployee>(builder =>
+            {
+                builder.ToTable("DepartmentEmployees");
+
+                builder.HasKey(de => new { de.NodeId, de.EmployeeId });
+
+                builder.Property(de => de.NodeId).IsRequired();
+                builder.Property(de => de.EmployeeId).IsRequired();
+            });
         }
     }
 }
