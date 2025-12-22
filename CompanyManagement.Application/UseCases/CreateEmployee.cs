@@ -26,22 +26,18 @@ namespace CompanyManagement.Application.UseCases
         /// The unique identifier (<see cref="Guid"/>) of the newly created employee.
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// Thrown when first name, last name, or email is null, empty, or contains only whitespace.
+        /// Employee with this email already exists
         /// </exception>
         /// <remarks>
-        /// This use case performs basic input validation only.
         /// It does not check for email uniqueness or assign the employee to any organizational node.
         /// </remarks>
         public async Task<Guid> ExecuteAsync(CreateEmployeeRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.FirstName))
-                throw new ArgumentException("First name is required");
-
-            if (string.IsNullOrWhiteSpace(request.LastName))
-                throw new ArgumentException("Last name is required");
-
-            if (string.IsNullOrWhiteSpace(request.Email))
-                throw new ArgumentException("Email is required");
+            
+            if (await _employeeRepository.ExistsByEmailAsync(request.Email)) 
+            {
+                throw new InvalidOperationException("Employee with this email already exists");
+            }
 
             var employee = new Employee(
                 Guid.NewGuid(),

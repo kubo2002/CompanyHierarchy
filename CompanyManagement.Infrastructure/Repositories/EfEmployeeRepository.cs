@@ -37,5 +37,16 @@ namespace CompanyManagement.Infrastructure.Repositories
         {
             return await _dbContext.Employees.FirstOrDefaultAsync(e => e.Id == id);
         }
+
+        /// <summary>
+        /// Vrati true, ak existuje zamestnanec s danym emailom.
+        /// </summary>
+        /// <param name="email">Email zamestnanca.</param>
+        /// <returns></returns>
+        public async Task<bool> ExistsByEmailAsync(string email)
+        {
+            return await _dbContext.Employees
+                .AnyAsync(e => e.Email == email);
+        }
     }
 }

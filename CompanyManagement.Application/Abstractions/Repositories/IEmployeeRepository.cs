@@ -1,7 +1,4 @@
 ﻿using CompanyManagement.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CompanyManagement.Application.Abstractions.Repositories
 {
@@ -9,5 +6,6 @@ namespace CompanyManagement.Application.Abstractions.Repositories
     {
         Task AddAsync(Employee employee);
         Task<Employee?> GetByIdAsync(Guid id);
+        Task<bool> ExistsByEmailAsync(string email);
     }
 }

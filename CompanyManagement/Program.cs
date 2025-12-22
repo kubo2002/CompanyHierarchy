@@ -36,6 +36,7 @@ builder.Services.AddScoped<RemoveEmployeeFromNode>();
 
 var app = builder.Build();
 
+// Zobrazenie connection stringu a DB_NAME() pre diagnostiku (ci som pripojeny na databazu na ktoru chcem)
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ManagementDbContext>();
@@ -59,6 +60,7 @@ using (var scope = app.Services.CreateScope())
     if (db.Database.CanConnect())
     {
         Console.WriteLine("Database connection OK");
+
     }
     else
     {
