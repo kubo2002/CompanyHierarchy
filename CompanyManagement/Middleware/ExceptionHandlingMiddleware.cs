@@ -1,4 +1,5 @@
 ﻿using CompanyManagement.Api.Responses;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Json;
 
@@ -39,7 +40,7 @@ namespace CompanyManagement.Api.Middleware
                 // Chyba sposobena nespravnymi vstupnymi udajmi klienta
                 await WriteError(context, HttpStatusCode.BadRequest, ex.Message);
             }
-            catch (InvalidOperationException ex)
+            catch (ValidationException ex)
             {
 
                 // Konflikt aplikacneho stavu (napr. porusenie business logiky)

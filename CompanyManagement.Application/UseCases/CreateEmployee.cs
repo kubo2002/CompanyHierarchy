@@ -1,6 +1,7 @@
 ﻿using CompanyManagement.Application.Abstractions.Repositories;
 using CompanyManagement.Application.DTOs.CreateEmployeeDTO;
 using CompanyManagement.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace CompanyManagement.Application.UseCases
 {
@@ -36,7 +37,7 @@ namespace CompanyManagement.Application.UseCases
             
             if (await _employeeRepository.ExistsByEmailAsync(request.Email)) 
             {
-                throw new InvalidOperationException("Employee with this email already exists");
+                throw new ValidationException("Employee with this email already exists");
             }
 
             var employee = new Employee(

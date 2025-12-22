@@ -1,8 +1,10 @@
 ﻿using CompanyManagement.Application.Abstractions.Repositories;
 using CompanyManagement.Application.DTOs;
+using CompanyManagement.Application.DTOs.CreateEmployeeDTO;
 using CompanyManagement.Application.UseCases;
 using CompanyManagement.Domain.Entities;
 using Moq;
+using System.ComponentModel.DataAnnotations;
 
 namespace Tests.Application
 {
@@ -42,21 +44,26 @@ namespace Tests.Application
         }
 
         [Fact]
-        public async Task ExecuteAsync_Should_Throw_When_FirstName_Is_Empty()
+        public async Task ExecuteAsync_Should_Throw_When_Email_Already_Exists()
         {
             // Arrange
             var repoMock = new Mock<IEmployeeRepository>();
+            repoMock
+                .Setup(r => r.ExistsByEmailAsync("k@k.com"))
+                .ReturnsAsync(true);
+
             var useCase = new CreateEmployee(repoMock.Object);
 
             var request = new CreateEmployeeRequest
             {
-                FirstName = "",
+                FirstName = "Jakub",
                 LastName = "Gubany",
-                Email = "test@test.com"
+                Email = "k@k.com",
+                Phone = "+421900123456"
             };
 
             // Act & Assert
-            await Assert.ThrowsAsync<ArgumentException>(
+            await Assert.ThrowsAsync<ValidationException>(
                 () => useCase.ExecuteAsync(request)
             );
         }
