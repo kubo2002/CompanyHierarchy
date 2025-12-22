@@ -36,11 +36,8 @@ namespace Tests.Application
             var useCase = new AssignEmployeeToNode(nodeRepoMock.Object, employeeRepoMock.Object);
 
             // Act
-            await useCase.ExecuteAsync(new AssignEmployeeToNodeRequest
-            {
-                NodeId = nodeId,
-                EmployeeId = employeeId
-            });
+            await useCase.ExecuteAsync(nodeId, employeeId);
+            
 
             // Assert
             nodeRepoMock.Verify(r => r.AssignEmployeeToNodeAsync(nodeId, employeeId), Times.Once);
@@ -64,12 +61,7 @@ namespace Tests.Application
 
             var useCase = new AssignEmployeeToNode(nodeRepoMock.Object,employeeRepoMock.Object);
 
-            await Assert.ThrowsAsync<InvalidOperationException>(() =>
-                useCase.ExecuteAsync(new AssignEmployeeToNodeRequest
-                {
-                    NodeId = node.Id,
-                    EmployeeId = Guid.NewGuid()
-                }));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => useCase.ExecuteAsync(node.Id, Guid.NewGuid()));
         }
     }
 }

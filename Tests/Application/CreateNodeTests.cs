@@ -14,7 +14,15 @@ namespace Tests.Application
         public async Task ExecuteAsync_Should_Create_Node_And_Save_It()
         {
             // Arrange
+            var parentId = Guid.NewGuid();
+
+            var parentNode = new Node(parentId,"Company A","COMP-A",NodeType.Company,null);
+
             var nodeRepositoryMock = new Mock<INodeRepository>();
+
+            nodeRepositoryMock
+                .Setup(r => r.GetByIdAsync(parentId))
+                .ReturnsAsync(parentNode);
 
             var useCase = new CreateNode(nodeRepositoryMock.Object);
 
@@ -23,7 +31,7 @@ namespace Tests.Application
                 Name = "IT Division",
                 Code = "IT",
                 Type = NodeType.Division,
-                ParentId = Guid.NewGuid()
+                ParentId = parentId
             };
 
             // Act
@@ -37,7 +45,7 @@ namespace Tests.Application
                     n.Name == "IT Division" &&
                     n.Code == "IT" &&
                     n.Type == NodeType.Division &&
-                    n.ParentId == request.ParentId
+                    n.ParentId == parentId
                 )),
                 Times.Once
             );

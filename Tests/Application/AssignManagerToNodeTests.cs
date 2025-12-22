@@ -81,7 +81,7 @@ namespace Tests.Application
             };
 
             // Act & Assert
-            await Assert.ThrowsAsync<ArgumentException>(() => useCase.ExecuteAsync(request));
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => useCase.ExecuteAsync(request));
         }
 
         [Fact]
@@ -108,7 +108,7 @@ namespace Tests.Application
             };
 
             // Act & Assert
-            await Assert.ThrowsAsync<ArgumentException>(() => useCase.ExecuteAsync(request));
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => useCase.ExecuteAsync(request));
         }
 
         [Fact]
