@@ -1,5 +1,5 @@
 ﻿using CompanyManagement.Application.Abstractions.Repositories;
-using CompanyManagement.Application.DTOs;
+using CompanyManagement.Application.DTOs.AssignManagerToNodeDTO;
 using CompanyManagement.Application.UseCases;
 using CompanyManagement.Domain.Entities;
 using CompanyManagement.Domain.Enums;

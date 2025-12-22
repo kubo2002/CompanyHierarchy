@@ -46,6 +46,10 @@ namespace CompanyManagement.Api.Middleware
                 // Konflikt aplikacneho stavu (napr. porusenie business logiky)
                 await WriteError(context, HttpStatusCode.Conflict, ex.Message);
             }
+            catch (InvalidOperationException ex) 
+            {
+                await WriteError(context, HttpStatusCode.BadRequest, ex.Message);
+            }
             catch (Exception)
             {
                 // Neocakavana chyba na strane servera

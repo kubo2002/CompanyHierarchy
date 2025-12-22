@@ -1,5 +1,5 @@
 ﻿using CompanyManagement.Application.Abstractions.Repositories;
-using CompanyManagement.Application.DTOs;
+using CompanyManagement.Application.DTOs.AssignManagerToNodeDTO;
 
 namespace CompanyManagement.Application.UseCases
 {
@@ -25,6 +25,9 @@ namespace CompanyManagement.Application.UseCases
         /// <exception cref="ArgumentException">
         /// Thrown when the specified node or employee does not exist.
         /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when the employee is already managing another node.
+        /// </exception>
         /// <remarks>
         /// This use case validates the existence of the node and employee,
         /// then delegates the assignment logic to the domain entity.
@@ -32,20 +35,37 @@ namespace CompanyManagement.Application.UseCases
         public async Task ExecuteAsync(AssignManagerRequest request)
         {
             var node = await _nodeRepository.GetByIdAsync(request.NodeId);
-            if (node is null)
-                throw new ArgumentException("Node not found");
+
+            // v pripade ze node neexistuje v databaze
+            if (node == null) 
+            {
+                throw new KeyNotFoundException("Node not found");
+            }
+                
 
             var employee = await _employeeRepository.GetByIdAsync(request.EmployeeId);
-            if (employee is null)
-                throw new ArgumentException("Employee not found");
+
+            // v pripade ze employee neexistuje v databaze
+            if (employee == null) 
+            {
+                throw new KeyNotFoundException("Employee not found");
+            }
+                
 
             var alreadyManagedNode = await _nodeRepository.GetNodeManagedByEmployeeAsync(employee.Id);
 
             if (alreadyManagedNode != null)
             {
-                throw new InvalidOperationException("Employee is already manager of another node");
+                if (alreadyManagedNode.LeaderEmployeeId == request.EmployeeId)
+                {
+                    throw new InvalidOperationException("Employee is already manager of this node");
+                }
+                if (alreadyManagedNode != null)
+                {
+                    throw new InvalidOperationException("Employee is already manager of another node");
+                }
             }
-
+           
             node.AssignLeader(employee.Id);
             await _nodeRepository.UpdateAsync(node);
         }

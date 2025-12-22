@@ -55,7 +55,14 @@ namespace CompanyManagement.Domain.Entities
         /// <param name="employeeId">Unikatne ID zamestnanca.</param>
         public void AssignLeader(Guid? employeeId)
         {
+            
+            if (LeaderEmployeeId != null) 
+            {
+                throw new InvalidOperationException("Node already has a manager");
+            }
+
             LeaderEmployeeId = employeeId;
         }
+
     }
 }
