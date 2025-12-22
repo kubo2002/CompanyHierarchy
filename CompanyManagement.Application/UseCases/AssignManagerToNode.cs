@@ -56,16 +56,14 @@ namespace CompanyManagement.Application.UseCases
 
             if (alreadyManagedNode != null)
             {
-                if (alreadyManagedNode.LeaderEmployeeId == request.EmployeeId)
+                if (alreadyManagedNode.Id == node.Id)
                 {
                     throw new InvalidOperationException("Employee is already manager of this node");
                 }
-                if (alreadyManagedNode != null)
-                {
-                    throw new InvalidOperationException("Employee is already manager of another node");
-                }
+
+                throw new InvalidOperationException("Employee is already manager of another node");
             }
-           
+
             node.AssignLeader(employee.Id);
             await _nodeRepository.UpdateAsync(node);
         }

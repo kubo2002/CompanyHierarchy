@@ -15,5 +15,8 @@ namespace CompanyManagement.Application.Abstractions.Repositories
         Task AssignEmployeeToNodeAsync(Guid nodeId, Guid employeeId);
         Task RemoveEmployeeFromNodeAsync(Guid nodeId, Guid employeeId);
 
+        // overenie ci je zamestnanec priradeny aspon k jednomu oddeleniu globalne medzi hierarchiami
+        Task<bool> IsEmployeeAssignedToAnyDepartmentAsync(Guid employeeId);
+
     }
 }

@@ -28,15 +28,14 @@ namespace CompanyManagement.Application.UseCases
         public async Task ExecuteAsync(UnassignManagerFromNodeRequest request)
         {
             var node = await _nodeRepository.GetByIdAsync(request.NodeId)
-                ?? throw new ArgumentException("Node not found");
-
+                        ?? throw new ArgumentException("Node not found");
 
             if (node.LeaderEmployeeId == null)
             {
                 return;
             }
 
-            node.AssignLeader(null);
+            node.UnassignLeader();
 
             await _nodeRepository.UpdateAsync(node);
         }
