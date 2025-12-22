@@ -34,26 +34,29 @@ namespace CompanyManagement.Api.Middleware
             {
                 await _next(context);
             }
+            catch (KeyNotFoundException ex)
+            {
+                await WriteError(context, HttpStatusCode.NotFound, ex.Message);
+            }
             catch (ArgumentException ex)
             {
-
-                // Chyba sposobena nespravnymi vstupnymi udajmi klienta
                 await WriteError(context, HttpStatusCode.BadRequest, ex.Message);
             }
             catch (ValidationException ex)
             {
-
-                // Konflikt aplikacneho stavu (napr. porusenie business logiky)
-                await WriteError(context, HttpStatusCode.Conflict, ex.Message);
-            }
-            catch (InvalidOperationException ex) 
-            {
                 await WriteError(context, HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                await WriteError(context, HttpStatusCode.Conflict, ex.Message);
             }
             catch (Exception)
             {
-                // Neocakavana chyba na strane servera
-                await WriteError(context, HttpStatusCode.InternalServerError, "Unexpected error occurred.");
+                await WriteError(
+                    context,
+                    HttpStatusCode.InternalServerError,
+                    "Unexpected error occurred."
+                );
             }
         }
 

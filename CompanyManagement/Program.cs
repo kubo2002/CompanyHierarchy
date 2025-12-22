@@ -3,14 +3,45 @@ using CompanyManagement.Application.Abstractions.Repositories;
 using CompanyManagement.Application.UseCases;
 using CompanyManagement.Infrastructure.Persistence;
 using CompanyManagement.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using CompanyManagement.Api.Responses;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Nacitanie connection stringu z konfiguracie (appsettings.json)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string not found");
 
+
+// vsuvka kvoli prebijaniu standardneho ValidationProblemDetails oproti mojmu zadefinovanemu formatu error response
+// Vypína defaultný ProblemDetails pre modeling binding errors
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var firstError = context.ModelState
+            .Values
+            .SelectMany(v => v.Errors)
+            .FirstOrDefault();
+
+        var message = firstError?.ErrorMessage ?? "Invalid request";
+
+        return new BadRequestObjectResult(ApiResponse<object>.Fail(message)
+        );
+    };
+});
+
+builder.Services.AddControllers(options =>
+{
+    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+});
+
+builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 
 // MVC kontrolery
 builder.Services.AddControllers();

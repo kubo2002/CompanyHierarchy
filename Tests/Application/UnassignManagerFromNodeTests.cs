@@ -1,5 +1,5 @@
 ﻿using CompanyManagement.Application.Abstractions.Repositories;
-using CompanyManagement.Application.DTOs;
+using CompanyManagement.Application.DTOs.UnassignManagerDTO;
 using CompanyManagement.Application.UseCases;
 using CompanyManagement.Domain.Entities;
 using CompanyManagement.Domain.Enums;
@@ -39,29 +39,6 @@ namespace Tests.Application
             nodeRepoMock.Verify(r => r.UpdateAsync(node), Times.Once);
         }
     
-
-        [Fact]
-        public async Task ExecuteAsync_Should_Do_Nothing_When_Node_Has_No_Manager()
-        {
-            var nodeId = Guid.NewGuid();
-
-            var node = new Node(nodeId, "Company", "C", NodeType.Company, null);
-
-            var nodeRepoMock = new Mock<INodeRepository>();
-            nodeRepoMock
-                .Setup(r => r.GetByIdAsync(nodeId))
-                .ReturnsAsync(node);
-
-            var useCase = new UnassignManagerFromNode(nodeRepoMock.Object);
-
-            await useCase.ExecuteAsync(new UnassignManagerFromNodeRequest
-            {
-                NodeId = nodeId
-            });
-
-            nodeRepoMock.Verify(r => r.UpdateAsync(It.IsAny<Node>()), Times.Never);
-        }
-
         [Fact]
         public async Task ExecuteAsync_Should_Throw_When_Node_Does_Not_Exist()
         {

@@ -1,5 +1,5 @@
 ﻿using CompanyManagement.Application.Abstractions.Repositories;
-using CompanyManagement.Application.DTOs;
+using CompanyManagement.Application.DTOs.UnassignManagerDTO;
 
 namespace CompanyManagement.Application.UseCases
 {
@@ -28,11 +28,11 @@ namespace CompanyManagement.Application.UseCases
         public async Task ExecuteAsync(UnassignManagerFromNodeRequest request)
         {
             var node = await _nodeRepository.GetByIdAsync(request.NodeId)
-                        ?? throw new ArgumentException("Node not found");
+                        ?? throw new KeyNotFoundException("Node not found");
 
             if (node.LeaderEmployeeId == null)
             {
-                return;
+                throw new InvalidOperationException("Node does not have an assigned manager.");
             }
 
             node.UnassignLeader();
