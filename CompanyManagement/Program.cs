@@ -68,6 +68,8 @@ builder.Services.AddScoped<GetNodeTree>();
 builder.Services.AddScoped<GetNodesByType>();
 builder.Services.AddScoped<DeleteNode>();
 builder.Services.AddScoped<DeleteEmployee>();
+builder.Services.AddScoped<UnassignEmployeeFromDepartment>();
+builder.Services.AddScoped<GetEmployeesByDepartment>();
 
 var app = builder.Build();
 

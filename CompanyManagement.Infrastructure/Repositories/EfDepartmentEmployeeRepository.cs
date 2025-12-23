@@ -1,4 +1,5 @@
 ﻿using CompanyManagement.Application.Abstractions.Repositories;
+using CompanyManagement.Domain.Entities;
 using CompanyManagement.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -71,6 +72,20 @@ namespace CompanyManagement.Infrastructure.Repositories
 
             _dbContext.DepartmentEmployees.RemoveRange(links);
             await _dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Vrati zoznam vsetkych zamestnancov priradených k danému oddeleniu.
+        /// </summary>
+        public async Task<List<Employee>> GetEmployeesByDepartmentIdAsync(Guid departmentId)
+        {
+            return await (
+                from de in _dbContext.DepartmentEmployees
+                join e in _dbContext.Employees
+                    on de.EmployeeId equals e.Id
+                where de.NodeId == departmentId
+                select e
+            ).ToListAsync();
         }
     }
 }

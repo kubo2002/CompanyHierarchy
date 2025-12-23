@@ -1,4 +1,6 @@
-﻿namespace CompanyManagement.Application.Abstractions.Repositories
+﻿using CompanyManagement.Domain.Entities;
+
+namespace CompanyManagement.Application.Abstractions.Repositories
 {
     /// <summary>
     /// Rozhranie pre pracu s priradenim zamestnancov k oddeleniam.
@@ -27,5 +29,10 @@
         /// </summary>
         /// <param name="employeeId">Identifikator zamestnanca.</param>
         Task RemoveByEmployeeIdAsync(Guid employeeId);
+
+        /// <summary>
+        /// Vrati zoznam zamestnancov priradenych k konkretnemu oddeleniu.
+        /// </summary>
+        Task<List<Employee>> GetEmployeesByDepartmentIdAsync(Guid departmentId);
     }
 }
