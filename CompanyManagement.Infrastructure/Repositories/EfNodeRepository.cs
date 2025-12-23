@@ -1,18 +1,27 @@
 ﻿using CompanyManagement.Application.Abstractions.Repositories;
 using CompanyManagement.Domain.Entities;
+using CompanyManagement.Domain.Enums;
 using CompanyManagement.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace CompanyManagement.Infrastructure.Repositories
 {
+    /// <summary>
+    /// Entity Framework implementacia repozitara pre entitu Node.
+    /// Zodpoveda za perzistenciu, nacitavanie a spravu uzlov
+    /// organizacnej hierarchie.
+    /// </summary>
     public class EfNodeRepository : INodeRepository
     {
+        /// <summary>
+        /// Databazovy kontext aplikacie.
+        /// </summary>
         private readonly ManagementDbContext _dbContext;
 
         /// <summary>
-        /// Implementacia repozitara pre entitu Node pomocou Entity Framework Core.
-        /// Zodpoveda za perzistenciu a nacitavanie uzlov organizacnej struktury.
+        /// Inicializuje repozitar s databazovym kontextom.
         /// </summary>
+        /// <param name="dbContext">Instancia databazoveho kontextu.</param>
         public EfNodeRepository(ManagementDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -21,7 +30,7 @@ namespace CompanyManagement.Infrastructure.Repositories
         /// <summary>
         /// Prida novy uzol do databazy.
         /// </summary>
-        /// <param name="node">Uzol, ktory sa ma ulozit.</param>
+        /// <param name="node">Entita uzla, ktora sa ma ulozit.</param>
         public async Task AddAsync(Node node)
         {
             _dbContext.Nodes.Add(node);
@@ -29,10 +38,12 @@ namespace CompanyManagement.Infrastructure.Repositories
         }
 
         /// <summary>
-        /// Vrati uzol podla jeho identifikatora.
+        /// Vrati uzol na zaklade jeho identifikatora.
         /// </summary>
         /// <param name="id">Identifikator uzla.</param>
-        /// <returns>Uzol alebo null, ak neexistuje.</returns>
+        /// <returns>
+        /// Entita uzla alebo null, ak uzol neexistuje.
+        /// </returns>
         public async Task<Node?> GetByIdAsync(Guid id)
         {
             return await _dbContext.Nodes.FirstOrDefaultAsync(n => n.Id == id);
@@ -49,21 +60,25 @@ namespace CompanyManagement.Infrastructure.Repositories
         }
 
         /// <summary>
-        /// Vrati uzol, ktory je riadeny (managed) konkretnym zamestnancom.
+        /// Vrati uzol, ktory je riadeny konkretnym zamestnancom.
         /// </summary>
         /// <param name="employeeId">Identifikator zamestnanca.</param>
-        /// <returns>Uzol alebo null, ak zamestnanec nie je leader ziadneho uzla.</returns>
+        /// <returns>
+        /// Uzol riadeny zamestnancom alebo null, ak taky neexistuje.
+        /// </returns>
         public async Task<Node?> GetNodeManagedByEmployeeAsync(Guid employeeId)
         {
             return await _dbContext.Nodes.FirstOrDefaultAsync(n => n.LeaderEmployeeId == employeeId);
         }
 
         /// <summary>
-        /// Zisti, ci je zamestnanec priradeny ku konkretnemu uzlu.
+        /// Overi, ci je zamestnanec priradeny ku konkretnemu uzlu.
         /// </summary>
         /// <param name="nodeId">Identifikator uzla.</param>
         /// <param name="employeeId">Identifikator zamestnanca.</param>
-        /// <returns>True, ak je zamestnanec priradeny, inak false.</returns>
+        /// <returns>
+        /// True, ak je zamestnanec priradeny, inak false.
+        /// </returns>
         public async Task<bool> IsEmployeeAssignedToNodeAsync(Guid nodeId, Guid employeeId)
         {
             return await _dbContext.DepartmentEmployees
@@ -77,9 +92,6 @@ namespace CompanyManagement.Infrastructure.Repositories
         /// </summary>
         /// <param name="nodeId">Identifikator uzla.</param>
         /// <param name="employeeId">Identifikator zamestnanca.</param>
-        /// <exception cref="InvalidOperationException">
-        /// Vyhodi sa, ak uzol alebo zamestnanec neexistuje.
-        /// </exception>
         public async Task AssignEmployeeToNodeAsync(Guid nodeId, Guid employeeId)
         {
             _dbContext.DepartmentEmployees.Add(new DepartmentEmployee
@@ -93,8 +105,8 @@ namespace CompanyManagement.Infrastructure.Repositories
         }
 
         /// <summary>
-        /// Odstrani zamestnanca z konkretneho uzla.
-        /// Ak uzol alebo zamestnanec neexistuje, operacia sa ticho ukonci.
+        /// Odstrani priradenie zamestnanca ku konkretnemu uzlu.
+        /// Ak priradenie neexistuje, operacia sa ticho ukonci.
         /// </summary>
         /// <param name="nodeId">Identifikator uzla.</param>
         /// <param name="employeeId">Identifikator zamestnanca.</param>
@@ -114,14 +126,68 @@ namespace CompanyManagement.Infrastructure.Repositories
         }
 
         /// <summary>
-        /// Kontroleuje, ci je zamestnanec priradeny k aspon jednému oddeleniu v organizacnej strukture.
+        /// Overi, ci je zamestnanec priradeny aspon k jednemu oddeleniu
+        /// v ramci celej organizacnej hierarchie.
         /// </summary>
-        /// <param name="employeeId">ID zamestnanca</param>
-        /// <returns></returns>
+        /// <param name="employeeId">Identifikator zamestnanca.</param>
+        /// <returns>
+        /// True, ak je zamestnanec priradeny k aspon jednemu oddeleniu, inak false.
+        /// </returns>
         public async Task<bool> IsEmployeeAssignedToAnyDepartmentAsync(Guid employeeId)
         {
             return await _dbContext.DepartmentEmployees
                 .AnyAsync(de => de.EmployeeId == employeeId);
+        }
+
+        /// <summary>
+        /// Vrati vsetky child uzly pre dany rodicovsky uzol.
+        /// </summary>
+        /// <param name="parentId">Id rodica (vrchol na ktorom prave stojim)</param>
+        /// <returns></returns>
+        public async Task<List<Node>> GetChildrenAsync(Guid parentId)
+        {
+            return await _dbContext.Nodes
+                .Where(n => n.ParentId == parentId)
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Vrati zoznam uzlov podla zadanych typov.
+        /// </summary>
+        /// <param name="types">Kolekcia typov uzlov.</param>
+        public async Task<List<Node>> GetByTypesAsync(IEnumerable<NodeType> types)
+        {
+            return await _dbContext.Nodes
+                .Where(n => types.Contains(n.Type))
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Odstrani uzol z databazy.
+        /// </summary>
+        /// <param name="node">Uzol, ktory sa ma odstranit.</param>
+        public async Task DeleteAsync(Node node)
+        {
+            _dbContext.Nodes.Remove(node);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Odstrani manazersku rolu zamestnanca z uzla,
+        /// ktory momentalne riadi.
+        /// </summary>
+        /// <param name="employeeId">Identifikator zamestnanca.</param>
+        public async Task UnassignManagerAsync(Guid employeeId)
+        {
+            var node = await _dbContext.Nodes.SingleOrDefaultAsync(n => n.LeaderEmployeeId == employeeId);
+
+
+            if (node != null)
+            {
+                node.UnassignLeader();
+            }
+         
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
