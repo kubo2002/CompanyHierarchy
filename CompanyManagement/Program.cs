@@ -55,6 +55,7 @@ builder.Services.AddDbContext<ManagementDbContext>(options => options.UseSqlServ
 // Registracia repository vrstvy (Infrastructure -> Application abstractions)
 builder.Services.AddScoped<INodeRepository, EfNodeRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EfEmployeeRepository>();
+builder.Services.AddScoped<IDepartmentEmployeeRepository, EfDepartmentEmployeeRepository>();
 
 // Registracia Use Case-ov z Aplication vrstvy
 builder.Services.AddScoped<CreateNode>();
@@ -63,7 +64,10 @@ builder.Services.AddScoped<AssignManagerToNode>();
 builder.Services.AddScoped<UnassignManagerFromNode>();
 builder.Services.AddScoped<AssignEmployeeToNode>();
 builder.Services.AddScoped<RemoveEmployeeFromNode>();
-
+builder.Services.AddScoped<GetNodeTree>();
+builder.Services.AddScoped<GetNodesByType>();
+builder.Services.AddScoped<DeleteNode>();
+builder.Services.AddScoped<DeleteEmployee>();
 
 var app = builder.Build();
 
