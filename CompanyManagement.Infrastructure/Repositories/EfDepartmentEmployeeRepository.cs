@@ -67,7 +67,7 @@ namespace CompanyManagement.Infrastructure.Repositories
 
             if (links.Count == 0)
             {
-                return;
+                throw new ArgumentException("Employee does not exist.");
             }
 
             _dbContext.DepartmentEmployees.RemoveRange(links);

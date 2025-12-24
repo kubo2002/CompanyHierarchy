@@ -17,35 +17,31 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // vsuvka kvoli prebijaniu standardneho ValidationProblemDetails oproti mojmu zadefinovanemu formatu error response
 // Vypína defaultný ProblemDetails pre modeling binding errors
 
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-    options.InvalidModelStateResponseFactory = context =>
-    {
-        var firstError = context.ModelState
-            .Values
-            .SelectMany(v => v.Errors)
-            .FirstOrDefault();
-
-        var message = firstError?.ErrorMessage ?? "Invalid request";
-
-        return new BadRequestObjectResult(ApiResponse<object>.Fail(message)
-        );
-    };
-});
-
-builder.Services.AddControllers(options =>
-{
-    options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
-});
-
-builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
-{
-    options.SuppressModelStateInvalidFilter = true;
-});
 
 // MVC kontrolery
 builder.Services.AddControllers();
 
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Where(x => x.Value!.Errors.Count > 0)
+            .ToDictionary(
+                x => x.Key,
+                x => x.Value!.Errors
+                    .Select(e => e.ErrorMessage)
+                    .ToArray()
+            );
+
+        return new BadRequestObjectResult(new
+        {
+            success = false,
+            message = "Validation failed",
+            errors
+        });
+    };
+});
 // pre Scalar 
 builder.Services.AddOpenApi();
 
