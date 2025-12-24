@@ -42,6 +42,7 @@ namespace CompanyManagement.Application.UseCases
 
             var employee = new Employee(
                 Guid.NewGuid(),
+                request.AcademicTitle,
                 request.FirstName,
                 request.LastName,
                 request.Email,

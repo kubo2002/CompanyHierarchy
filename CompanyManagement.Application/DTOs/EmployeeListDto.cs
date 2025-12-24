@@ -16,7 +16,8 @@ namespace CompanyManagement.Application.DTOs
                 Id = employee.Id,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
-                Email = employee.Email
+                Email = employee.Email,
+                AcademicTitle = employee.AcademicTitle
             };
         }
     }

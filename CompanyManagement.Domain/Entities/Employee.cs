@@ -15,6 +15,7 @@ namespace CompanyManagement.Domain.Entities
         public string LastName { get; private set; }
         public string Email { get; private set; }
         public string Phone { get; private set; }
+        public string? AcademicTitle { get; private set; }
         public ICollection<Node> MemberOfNodes { get; } = new List<Node>();
         private Employee() { }
 
@@ -26,13 +27,15 @@ namespace CompanyManagement.Domain.Entities
         /// <param name="lastName">Priezvisko zamestnanca.</param>
         /// <param name="email">Emial zamestnanca.</param>
         /// <param name="phone">Telefon zamestnanca.</param>
-        public Employee(Guid id, string firstName, string lastName, string email, string phone)
+        /// <param name="academicTitle">Akademicky titul.</param>
+        public Employee(Guid id, string? academicTitle, string firstName, string lastName, string email, string phone)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
             Email = email;
             Phone = phone;
+            AcademicTitle = academicTitle;
         }
     }
 }
