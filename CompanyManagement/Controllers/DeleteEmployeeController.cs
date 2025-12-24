@@ -1,4 +1,6 @@
-﻿using CompanyManagement.Application.UseCases;
+﻿using CompanyManagement.Api.Responses;
+using CompanyManagement.Application.UseCases;
+using CompanyManagement.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyManagement.Api.Controllers
@@ -37,7 +39,7 @@ namespace CompanyManagement.Api.Controllers
         {
             await _deleteEmployee.ExecuteAsync(employeeId);
 
-            return NoContent(); // 204
+            return Ok(ApiResponse<Guid>.Ok(employeeId, "Employee deleted."));
         }
     }
 }

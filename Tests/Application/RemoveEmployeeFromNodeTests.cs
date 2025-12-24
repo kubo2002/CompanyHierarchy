@@ -25,7 +25,7 @@ namespace Tests.Application
 
             employeeRepoMock
                 .Setup(r => r.GetByIdAsync(employeeId))
-                .ReturnsAsync(new Employee(employeeId, "John", "Doe", "a@b.com", "123"));
+                .ReturnsAsync(new Employee(employeeId, "bc." ,"John", "Doe", "a@b.com", "123"));
 
             nodeRepoMock
                 .Setup(r => r.IsEmployeeAssignedToNodeAsync(nodeId, employeeId))
@@ -59,7 +59,7 @@ namespace Tests.Application
 
             employeeRepoMock
                 .Setup(r => r.GetByIdAsync(employeeId))
-                .ReturnsAsync(new Employee(employeeId, "Jakub", "Gubany", "jakub@gubany.com", "123"));
+                .ReturnsAsync(new Employee(employeeId, "Ing","Jakub", "Gubany", "jakub@gubany.com", "123"));
 
             nodeRepoMock
                 .Setup(r => r.IsEmployeeAssignedToNodeAsync(nodeId, employeeId))
@@ -90,7 +90,7 @@ namespace Tests.Application
 
             employeeRepoMock
                 .Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
-                .ReturnsAsync(new Employee(Guid.NewGuid(), "Jakub", "Gubany", "jakub@gubany.com", "123"));
+                .ReturnsAsync(new Employee(Guid.NewGuid(),"Ing." ,"Jakub", "Gubany", "jakub@gubany.com", "123"));
 
             var useCase = new RemoveEmployeeFromNode(nodeRepoMock.Object, employeeRepoMock.Object);
 

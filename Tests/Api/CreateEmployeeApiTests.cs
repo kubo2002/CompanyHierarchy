@@ -27,7 +27,7 @@ namespace Tests.Api
             );
 
             // Act
-            var response = await client.PostAsync("/api/employees", content);
+            var response = await client.PostAsync("/api/createEmployee", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -45,7 +45,7 @@ namespace Tests.Api
 
             var content = JsonContent.Create(request);
 
-            var response = await client.PostAsync("/api/employees", content);
+            var response = await client.PostAsync("/api/createEmployee", content);
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);

@@ -23,12 +23,7 @@ namespace Tests.Application
                 NodeType.Division,
                 null);
 
-            var employee = new Employee(
-                employeeId,
-                "Jakub",
-                "Gubany",
-                "jakub@test.com",
-                "123");
+            var employee = new Employee(employeeId,"Ing.","Jakub","Gubany","jakub@test.com","123");
 
             var nodeRepoMock = new Mock<INodeRepository>();
             var employeeRepoMock = new Mock<IEmployeeRepository>();
@@ -136,8 +131,7 @@ namespace Tests.Application
 
             employeeRepoMock
                 .Setup(r => r.GetByIdAsync(employeeId))
-                .ReturnsAsync(new Employee(
-                    employeeId, "Jakub", "Gubany", "j@g.com", "123"));
+                .ReturnsAsync(new Employee(employeeId, "Ing." ,"Jakub", "Gubany", "j@g.com", "123"));
 
             var useCase = new AssignManagerToNode(
                 nodeRepoMock.Object,

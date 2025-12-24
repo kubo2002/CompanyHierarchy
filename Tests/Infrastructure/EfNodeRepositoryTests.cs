@@ -37,7 +37,7 @@ namespace Tests.Infrastructure
             var empRepo = new EfEmployeeRepository(db);
 
             // vytvorím zamestnanca a oddelenie
-            var employee = new Employee(Guid.NewGuid(), "Jakub", "Gubany", "jakub@gubany.com", "123");
+            var employee = new Employee(Guid.NewGuid(), "Ing." ,"Jakub", "Gubany", "jakub@gubany.com", "123");
             var node = new Node(Guid.NewGuid(), "Vyvojari", "Vyvojari", NodeType.Department, null);
 
             // uložím ich do databázy
@@ -61,7 +61,7 @@ namespace Tests.Infrastructure
             var repo = new EfEmployeeRepository(db);
 
             // vytvorím zamestnanca
-            var employee = new Employee(Guid.NewGuid(),"Ján","Novák","jan.novak@test.sk","0900123456");
+            var employee = new Employee(Guid.NewGuid(),"Ing.","Ján","Novák","jan.novak@test.sk","0900123456");
 
             // uložím ho do databázy
             await repo.AddAsync(employee);
@@ -83,7 +83,7 @@ namespace Tests.Infrastructure
             var employeeRepo = new EfEmployeeRepository(db);
 
             var department = new Node(Guid.NewGuid(),"Kamenolom","KMLNM",NodeType.Department,null);
-            var employee = new Employee(Guid.NewGuid(),"Jakub", "Gubány", "jakub@gubany.sk", "0900123456");
+            var employee = new Employee(Guid.NewGuid(),"bc.","Jakub", "Gubány", "jakub@gubany.sk", "0900123456");
 
             await nodeRepo.AddAsync(department);
             await employeeRepo.AddAsync(employee);

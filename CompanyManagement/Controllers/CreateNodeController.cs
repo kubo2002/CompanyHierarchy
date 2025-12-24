@@ -7,7 +7,7 @@ namespace CompanyManagement.Api.Controllers
 {
     [ApiController]
     [Route("api/nodes")]
-    public class NodesController : ControllerBase
+    public class CreateNodeController : ControllerBase
     {
         private readonly CreateNode _createNode;
 
@@ -15,7 +15,7 @@ namespace CompanyManagement.Api.Controllers
         /// API controller pre pracu s uzlami organizacnej struktury.
         /// Zodpoveda za spracovanie HTTP poziadaviek tykajucich sa uzlov.
         /// </summary>
-        public NodesController(CreateNode createNode)
+        public CreateNodeController(CreateNode createNode)
         {
             _createNode = createNode;
         }

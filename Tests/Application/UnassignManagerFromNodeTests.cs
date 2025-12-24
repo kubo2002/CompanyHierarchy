@@ -46,7 +46,7 @@ namespace Tests.Application
 
             var useCase = new UnassignManagerFromNode(nodeRepoMock.Object);
 
-            await Assert.ThrowsAsync<ArgumentException>(() =>
+            await Assert.ThrowsAsync<KeyNotFoundException>(() =>
                 useCase.ExecuteAsync(new UnassignManagerFromNodeRequest
                 {
                     NodeId = Guid.NewGuid()

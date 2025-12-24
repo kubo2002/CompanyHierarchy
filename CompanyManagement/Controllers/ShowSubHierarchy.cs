@@ -11,7 +11,7 @@ namespace CompanyManagement.Api.Controllers
     /// </summary>
     [ApiController]
     [Route("api/nodes")]
-    public class NodeTreeController : ControllerBase
+    public class ShowSubHierarchy : ControllerBase
     {
         /// <summary>
         /// Use case pre zostavenie stromovej struktury uzlov.
@@ -22,7 +22,7 @@ namespace CompanyManagement.Api.Controllers
         /// Inicializuje controller s potrebnym use casom.
         /// </summary>
         /// <param name="getNodeTree">Use case pre zostavenie stromu uzlov.</param>
-        public NodeTreeController(GetNodeTree getNodeTree)
+        public ShowSubHierarchy(GetNodeTree getNodeTree)
         {
             _getNodeTree = getNodeTree;
         }

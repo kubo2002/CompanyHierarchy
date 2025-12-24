@@ -34,7 +34,7 @@ namespace Tests.Api
 
             var node = new Node(nodeId,"Company","C01",NodeType.Company,null);
 
-            var employee = new Employee(employeeId,"Jakub","Gubany","jakub@gubany.com","123");
+            var employee = new Employee(employeeId,null,"Jakub","Gubany","jakub@gubany.com","123");
 
             _nodeRepositoryMock
                 .Setup(r => r.GetByIdAsync(nodeId))
@@ -108,7 +108,7 @@ namespace Tests.Api
 
             node.AssignLeader(employeeId);
 
-            var employee = new Employee(employeeId,"Jakub","Gubany","jakub@gubany.com","123");
+            var employee = new Employee(employeeId,null,"Jakub","Gubany","jakub@gubany.com","123");
 
             _nodeRepositoryMock.Setup(r => r.GetByIdAsync(nodeId)).ReturnsAsync(node);
             _employeeRepositoryMock.Setup(r => r.GetByIdAsync(employeeId)).ReturnsAsync(employee);
@@ -135,7 +135,7 @@ namespace Tests.Api
 
             var otherNode = new Node(otherNodeId,"Division","D01",NodeType.Division,nodeId);
 
-            var employee = new Employee(employeeId,"Jakub","Gubany","jakub@gubany.com","123");
+            var employee = new Employee(employeeId,null, "Jakub","Gubany","jakub@gubany.com","123");
 
             _nodeRepositoryMock.Setup(r => r.GetByIdAsync(nodeId)).ReturnsAsync(node);
             _employeeRepositoryMock.Setup(r => r.GetByIdAsync(employeeId)).ReturnsAsync(employee);

@@ -29,7 +29,7 @@ namespace Tests.Api
         public async Task ExecuteAsync_Should_Assign_Employee_To_Department()
         {
             var department = new Node(Guid.NewGuid(), "IT", "IT01", NodeType.Department, null);
-            var employee = new Employee(Guid.NewGuid(), "Jakub", "Gubany", "jakub@gubany.com", "123");
+            var employee = new Employee(Guid.NewGuid(), null, "Jakub", "Gubany", "jakub@gubany.com", "123");
 
             _dbContext.Nodes.Add(department);
             _dbContext.Employees.Add(employee);
@@ -48,7 +48,7 @@ namespace Tests.Api
         [Fact]
         public async Task ExecuteAsync_Should_Throw_When_Node_Not_Found()
         {
-            var employee = new Employee(Guid.NewGuid(), "Jakub", "Gubany", "jakub@gubany.com", "123");
+            var employee = new Employee(Guid.NewGuid(), null, "Jakub", "Gubany", "jakub@gubany.com", "123");
             _dbContext.Employees.Add(employee);
             await _dbContext.SaveChangesAsync();
 
@@ -78,7 +78,7 @@ namespace Tests.Api
         public async Task ExecuteAsync_Should_Throw_When_Node_Is_Not_Department()
         {
             var company = new Node(Guid.NewGuid(), "Company", "C01", NodeType.Company, null);
-            var employee = new Employee(Guid.NewGuid(), "Jakub", "Gubany", "jakub@gubany.com", "123");
+            var employee = new Employee(Guid.NewGuid(), null, "Jakub", "Gubany", "jakub@gubany.com", "123");
 
             _dbContext.Nodes.Add(company);
             _dbContext.Employees.Add(employee);
@@ -95,7 +95,7 @@ namespace Tests.Api
         public async Task ExecuteAsync_Should_Throw_When_Employee_Already_In_Same_Department()
         {
             var department = new Node(Guid.NewGuid(), "IT", "IT01", NodeType.Department, null);
-            var employee = new Employee(Guid.NewGuid(), "Jakub", "Gubany", "jakub@gubany.com", "123");
+            var employee = new Employee(Guid.NewGuid(),null, "Jakub", "Gubany", "jakub@gubany.com", "123");
 
             _dbContext.Nodes.Add(department);
             _dbContext.Employees.Add(employee);
@@ -119,7 +119,7 @@ namespace Tests.Api
         {
             var department1 = new Node(Guid.NewGuid(), "IT", "IT01", NodeType.Department, null);
             var department2 = new Node(Guid.NewGuid(), "HR", "HR01", NodeType.Department, null);
-            var employee = new Employee(Guid.NewGuid(), "Jakub", "Gubany", "jakub@gubany.com", "123");
+            var employee = new Employee(Guid.NewGuid(), null, "Jakub", "Gubany", "jakub@gubany.com", "123");
 
             _dbContext.Nodes.AddRange(department1, department2);
             _dbContext.Employees.Add(employee);

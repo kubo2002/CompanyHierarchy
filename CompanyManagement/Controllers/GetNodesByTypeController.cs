@@ -13,7 +13,7 @@ namespace CompanyManagement.Api.Controllers
     /// </summary>
     [ApiController]
     [Route("api/nodes")]
-    public class NodesQueryController : ControllerBase
+    public class ShowNodesByType : ControllerBase
     {
         /// <summary>
         /// Use case pre ziskanie uzlov na zaklade typu.
@@ -24,7 +24,7 @@ namespace CompanyManagement.Api.Controllers
         /// Inicializuje controller s potrebnym use casom.
         /// </summary>
         /// <param name="getNodesByType">Use case pre nacitanie uzlov podla typu.</param>
-        public NodesQueryController(GetNodesByType getNodesByType)
+        public ShowNodesByType(GetNodesByType getNodesByType)
         {
             _getNodesByType = getNodesByType;
         }

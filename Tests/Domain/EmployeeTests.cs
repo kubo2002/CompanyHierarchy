@@ -13,6 +13,7 @@ namespace Tests.Domain
             // Act
             Employee employee = new Employee(
                 id,
+                "Ing.",
                 "Jakub",
                 "Gubany",
                 "jakub.gubany@test.com",

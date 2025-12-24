@@ -1,13 +1,14 @@
 ﻿using CompanyManagement.Api.Responses;
 using CompanyManagement.Application.DTOs.CreateEmployeeDTO;
 using CompanyManagement.Application.UseCases;
+using CompanyManagement.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyManagement.Api.Controllers
 {
     [ApiController]
-    [Route("api/employees")]
-    public class EmployeesController : ControllerBase
+    [Route("api/createEmployee")]
+    public class CreateEmployeeController : ControllerBase
     {
         private readonly CreateEmployee _createEmployee;
 
@@ -15,7 +16,7 @@ namespace CompanyManagement.Api.Controllers
         /// API controller pre spravu zamestnancov.
         /// Zodpoveda za spracovanie HTTP poziadaviek tykajucich sa zamestnancov.
         /// </summary>
-        public EmployeesController(CreateEmployee createEmployee)
+        public CreateEmployeeController(CreateEmployee createEmployee)
         {
             _createEmployee = createEmployee;
         }
@@ -35,7 +36,7 @@ namespace CompanyManagement.Api.Controllers
         {
             var employeeId = await _createEmployee.ExecuteAsync(request);
 
-            return CreatedAtAction(nameof(CreateEmployee), new { id = employeeId }, ApiResponse<CreateEmployeeResponse>.Ok(new CreateEmployeeResponse { Id = employeeId },"Employee created successfully"));
+            return Ok(ApiResponse<object>.Ok(employeeId, "Employee created"));
         }
     }
 }

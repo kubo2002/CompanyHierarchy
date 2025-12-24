@@ -1,4 +1,5 @@
-﻿using CompanyManagement.Application.UseCases;
+﻿using Azure.Core;
+using CompanyManagement.Application.UseCases;
 using CompanyManagement.Domain.Entities;
 using CompanyManagement.Domain.Enums;
 using CompanyManagement.Infrastructure.Repositories;
@@ -18,10 +19,8 @@ namespace Tests.Application
             var departmentId = Guid.NewGuid();
             var employeeId = Guid.NewGuid();
 
-            db.Nodes.Add(new Node(departmentId,"IT Department","IT",NodeType.Department,null));
-
-            db.Employees.Add(new Employee(employeeId,"Jakub","Gubany","jakub@test.sk","0900000000"));
-
+            db.Nodes.Add(new Node(departmentId, "IT Department", "IT", NodeType.Department, null));
+            db.Employees.Add(new Employee(employeeId, "Ing.", "Jakub", "Gubany", "jakub@test.sk", "0900000000"));
             db.DepartmentEmployees.Add(new DepartmentEmployee
             {
                 NodeId = departmentId,
@@ -37,10 +36,7 @@ namespace Tests.Application
             await useCase.ExecuteAsync(departmentId, employeeId);
 
             // Assert
-            var exists = db.DepartmentEmployees
-                .Any(de => de.EmployeeId == employeeId);
-
-            Assert.False(exists);
+            Assert.Empty(db.DepartmentEmployees);
         }
 
         [Fact]
@@ -52,22 +48,18 @@ namespace Tests.Application
             var departmentId = Guid.NewGuid();
             var employeeId = Guid.NewGuid();
 
-            db.Nodes.Add(new Node(departmentId,"HR Department","HR",NodeType.Department,null));
+            db.Nodes.Add(new Node(departmentId, "HR Department", "HR", NodeType.Department, null));
 
-            db.Employees.Add(new Employee(employeeId,"Test","User","test@test.sk","0900111111"));
-
+            db.Employees.Add(new Employee(employeeId, "Ing.", "Test", "User", "test@test.sk", "0900111111"));
             await db.SaveChangesAsync();
 
             var repo = new EfDepartmentEmployeeRepository(db);
             var useCase = new UnassignEmployeeFromDepartment(repo);
 
             // Act
-            await useCase.ExecuteAsync(departmentId, employeeId);
 
             // Assert
-            var count = db.DepartmentEmployees.Count();
-
-            Assert.Equal(0, count);
+            await Assert.ThrowsAsync<ArgumentException>(() => useCase.ExecuteAsync(departmentId, employeeId));
         }
 
         [Fact]
@@ -82,9 +74,9 @@ namespace Tests.Application
 
             db.Nodes.Add(new Node(departmentId,"Finance Department","FIN",NodeType.Department,null));
 
-            db.Employees.Add(new Employee(employee1Id,"Employee","One","one@test.sk", "0900222222"));
+            db.Employees.Add(new Employee(employee1Id,"Ing.","Employee","One","one@test.sk", "0900222222"));
 
-            db.Employees.Add(new Employee(employee2Id,"Employee","Two","two@test.sk","0900333333"));
+            db.Employees.Add(new Employee(employee2Id,"Ing.","Employee","Two","two@test.sk","0900333333"));
 
             db.DepartmentEmployees.Add(new DepartmentEmployee
             {
