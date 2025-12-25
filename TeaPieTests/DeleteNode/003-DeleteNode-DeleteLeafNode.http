@@ -1,0 +1,16 @@
+# @name CreateLeafNode
+## TEST-EXPECT-STATUS: [200,201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Leaf Department",
+  "code": "LEAF-{{$guid}}",
+  "type": 4
+}
+
+###
+
+# @name DeleteLeafNode
+## TEST-EXPECT-STATUS: [200]
+DELETE {{ApiBaseUrl}}/api/nodes/{{CreateLeafNode.response.body.$.data.id}}

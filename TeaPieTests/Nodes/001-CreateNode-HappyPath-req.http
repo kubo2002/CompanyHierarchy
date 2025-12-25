@@ -1,0 +1,13 @@
+# @name CreateNode
+## TEST-EXPECT-STATUS: [200, 201]
+## TEST-HAS-BODY
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "IT Department",
+  "code": "IT-{{$guid}}",
+  "type": 1,
+  "parentId": null,
+  "leaderEmployeeId": null
+}

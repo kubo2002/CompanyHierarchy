@@ -24,7 +24,6 @@ namespace CompanyManagement.Api.Controllers
             await _unassignManagerFromNode.ExecuteAsync(request);
             return Ok(ApiResponse<object>.Ok(null, "Manager removed from node successfully."));
 
-            //TODO treba lepsie vypisovat chybove hlasky v pripade neuspechu
         }
     }
     

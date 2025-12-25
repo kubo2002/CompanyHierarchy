@@ -1,0 +1,31 @@
+# @name CreateRoot
+## TEST-EXPECT-STATUS: [200,201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Project A",
+  "code": "DIV-{{$guid}}",
+  "type": 3
+}
+
+
+###
+
+# @name CreateChild
+## TEST-EXPECT-STATUS: [200,201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Department A",
+  "code": "DEP-{{$guid}}",
+  "type": 4,
+  "parentId": "{{CreateRoot.response.body.$.data.id}}"
+}
+
+###
+
+# @name DeleteRootWithSubtree
+## TEST-EXPECT-STATUS: [200]
+DELETE {{ApiBaseUrl}}/api/nodes/{{CreateRoot.response.body.$.data.id}}

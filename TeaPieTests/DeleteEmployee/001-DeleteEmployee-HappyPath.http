@@ -1,0 +1,17 @@
+# @name CreateEmployee
+## TEST-EXPECT-STATUS: [200]
+POST {{ApiBaseUrl}}/api/createEmployee
+Content-Type: application/json
+
+{
+  "firstName": "Solo",
+  "lastName": "Employee",
+  "email": "solo-{{$guid}}@test.sk",
+  "phone": "0900000001"
+}
+
+###
+
+# @name DeleteEmployee
+## TEST-EXPECT-STATUS: [200]
+DELETE {{ApiBaseUrl}}/api/employees/{{CreateEmployee.response.body.$.data}}

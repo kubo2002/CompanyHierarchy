@@ -1,0 +1,16 @@
+# @name CreateDivision
+## TEST-EXPECT-STATUS: [200,201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Division X",
+  "code": "DIV-{{$guid}}",
+  "type": 2
+}
+
+###
+
+# @name GetEmployees_FromNonDepartment
+## TEST-EXPECT-STATUS: [400]
+GET {{ApiBaseUrl}}/api/departments/{{CreateDivision.response.body.$.data.id}}/employees

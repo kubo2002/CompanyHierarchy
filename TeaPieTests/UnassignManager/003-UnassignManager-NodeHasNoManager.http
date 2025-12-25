@@ -1,0 +1,20 @@
+# @name CreateDepartmentWithoutManager
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "No Manager Dept",
+  "code": "NM-{{$guid}}",
+  "type": 4
+}
+
+###
+
+# @name UnassignManager_NoManager
+## TEST-EXPECT-STATUS: [400,409]
+POST {{ApiBaseUrl}}/api/employees/unassign-manager
+Content-Type: application/json
+
+{
+  "nodeId": "{{CreateDepartmentWithoutManager.response.body.$.data.id}}"
+}

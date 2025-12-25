@@ -1,0 +1,15 @@
+# @name CreateEmptyDepartment
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Empty Department",
+  "code": "EMPTY-{{$guid}}",
+  "type": 4
+}
+
+###
+
+# @name GetEmptyDepartmentEmployees
+## TEST-EXPECT-STATUS: [200]
+GET {{ApiBaseUrl}}/api/departments/{{CreateEmptyDepartment.response.body.$.data.id}}/employees

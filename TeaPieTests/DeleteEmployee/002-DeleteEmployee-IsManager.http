@@ -1,0 +1,39 @@
+# @name CreateEmployee
+POST {{ApiBaseUrl}}/api/createEmployee
+Content-Type: application/json
+
+{
+  "firstName": "Boss",
+  "lastName": "Employee",
+  "email": "boss-{{$guid}}@test.sk",
+  "phone": "0900000003"
+}
+
+###
+
+# @name CreateDepartment
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Managed Department",
+  "code": "MNG-{{$guid}}",
+  "type": 4
+}
+
+###
+
+# @name AssignManager
+POST {{ApiBaseUrl}}/api/nodes/assign-manager
+Content-Type: application/json
+
+{
+  "nodeId": "{{CreateDepartment.response.body.$.data.id}}",
+  "employeeId": "{{CreateEmployee.response.body.$.data}}"
+}
+
+###
+
+# @name DeleteEmployee_Manager
+## TEST-EXPECT-STATUS: [200]
+DELETE {{ApiBaseUrl}}/api/employees/{{CreateEmployee.response.body.$.data}}

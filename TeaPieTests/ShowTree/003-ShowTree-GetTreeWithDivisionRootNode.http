@@ -1,0 +1,31 @@
+# @name CreateDivision
+## TEST-EXPECT-STATUS: [200,201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Division A",
+  "code": "DIV-{{$guid}}",
+  "type": 2,
+  "parentId": null
+}
+
+###
+
+# @name CreateProject
+## TEST-EXPECT-STATUS: [200,201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "project A",
+  "code": "DEP-{{$guid}}",
+  "type": 3,
+  "parentId": "{{CreateDivision.response.body.$.data.id}}"
+}
+
+###
+
+# @name GetDivisionTree
+## TEST-EXPECT-STATUS: [200]
+GET {{ApiBaseUrl}}/api/nodes/{{CreateDivision.response.body.$.data.id}}/tree

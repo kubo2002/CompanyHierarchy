@@ -1,0 +1,3 @@
+# @name GetEmployees_DepartmentNotFound
+## TEST-EXPECT-STATUS: [404]
+GET {{ApiBaseUrl}}/api/departments/{{$guid}}/employees

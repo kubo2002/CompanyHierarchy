@@ -1,0 +1,25 @@
+# @name CreateEmployeeForLeader
+## TEST-EXPECT-STATUS: [200]
+POST {{ApiBaseUrl}}/api/createEmployee
+Content-Type: application/json
+
+{
+  "firstName": "Leader",
+  "lastName": "User",
+  "email": "leader-{{$guid}}@test.sk",
+  "phone": "0900123456"
+}
+
+###
+
+# @name CreateNodeWithLeader
+## TEST-EXPECT-STATUS: [200, 201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Department With Leader",
+  "code": "LEADER-{{$guid}}",
+  "type": 1,
+  "leaderEmployeeId": "{{CreateEmployeeForLeader.response.body.$.data}}"
+}

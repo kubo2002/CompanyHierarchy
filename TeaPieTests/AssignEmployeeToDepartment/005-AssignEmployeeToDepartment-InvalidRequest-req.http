@@ -1,0 +1,9 @@
+# @name AssignInvalidBody
+## TEST-EXPECT-STATUS: [400]
+POST {{ApiBaseUrl}}/api/employees/assign-employee
+Content-Type: application/json
+
+{
+  "nodeId": "",
+  "employeeId": ""
+}

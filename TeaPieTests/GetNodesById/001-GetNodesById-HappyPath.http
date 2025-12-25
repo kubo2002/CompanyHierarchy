@@ -1,0 +1,15 @@
+# @name CreateDepartment
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Finance Department",
+  "code": "FIN-{{$guid}}",
+  "type": 4
+}
+
+###
+
+# @name GetDepartments
+## TEST-EXPECT-STATUS: [200]
+GET {{ApiBaseUrl}}/api/nodes/by-type?types=4

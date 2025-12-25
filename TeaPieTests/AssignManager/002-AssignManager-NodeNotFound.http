@@ -1,0 +1,25 @@
+# @name CreateEmployee
+## TEST-EXPECT-STATUS: [200]
+POST {{ApiBaseUrl}}/api/createEmployee
+Content-Type: application/json
+
+{
+  "firstName": "Martin",
+  "lastName": "Manager",
+  "email": "manager-{{$guid}}@test.sk",
+  "phone": "0900666666",
+  "academicTitle": null
+}
+
+###
+
+# @name AssignManager_NodeNotFound
+## TEST-EXPECT-STATUS: [404]
+POST {{ApiBaseUrl}}/api/employees/assign-manager
+Content-Type: application/json
+
+{
+  "nodeId": "{{$guid}}",
+  "employeeId": "{{CreateEmployee.response.body.$.data}}"
+}
+

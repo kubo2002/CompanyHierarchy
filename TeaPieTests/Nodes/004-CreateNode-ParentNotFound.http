@@ -1,0 +1,11 @@
+# @name CreateNodeParentNotFound
+## TEST-EXPECT-STATUS: [404]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Child With Missing Parent",
+  "code": "NOPARENT-{{$guid}}",
+  "type": 2,
+  "parentId": "{{$guid}}"
+}

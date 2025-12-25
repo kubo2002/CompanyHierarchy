@@ -1,0 +1,3 @@
+# @name DeleteEmployee_NotFound
+## TEST-EXPECT-STATUS: [404]
+DELETE {{ApiBaseUrl}}/api/employees/{{$guid}}

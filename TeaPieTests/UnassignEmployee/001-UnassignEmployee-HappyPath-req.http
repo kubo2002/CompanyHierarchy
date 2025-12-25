@@ -1,0 +1,48 @@
+# @name CreateEmployee
+## TEST-EXPECT-STATUS: [200]
+POST {{ApiBaseUrl}}/api/createEmployee
+Content-Type: application/json
+
+{
+  "firstName": "Eva",
+  "lastName": "Nova",
+  "email": "eva-{{$guid}}@test.sk",
+  "phone": "0900333333"
+}
+
+###
+
+# @name CreateDepartment
+## TEST-EXPECT-STATUS: [200, 201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "HR Department",
+  "code": "HR-{{$guid}}",
+  "type": 4
+}
+
+
+###
+
+# @name AssignEmployee
+## TEST-EXPECT-STATUS: [200]
+POST {{ApiBaseUrl}}/api/employees/assign-employee
+Content-Type: application/json
+
+{
+  "nodeId": "{{CreateDepartment.response.body.$.data.id}}",
+  "employeeId": "{{CreateEmployee.response.body.$.data}}"
+}
+
+###
+
+# @name UnassignEmployee
+## TEST-EXPECT-STATUS: [200]
+POST {{ApiBaseUrl}}/api/employees/{{CreateEmployee.response.body.$.data}}/unassign
+Content-Type: application/json
+
+{
+  "employeeId": "{{CreateEmployee.response.body.$.data}}"
+}

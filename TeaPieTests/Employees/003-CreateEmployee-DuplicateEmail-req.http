@@ -1,0 +1,25 @@
+# @name CreateEmployeeFirst
+## TEST-EXPECT-STATUS: [200]
+POST {{ApiBaseUrl}}/api/createEmployee
+Content-Type: application/json
+
+{
+  "firstName": "Jan",
+  "lastName": "Novak",
+  "email": "duplicate-{{$guid}}@test.sk",
+  "phone": "0900123456"
+}
+
+###
+
+# @name CreateEmployeeDuplicate
+## TEST-EXPECT-STATUS: [400]
+POST {{ApiBaseUrl}}/api/createEmployee
+Content-Type: application/json
+
+{
+  "firstName": "Peter",
+  "lastName": "Mrkvicka",
+  "email": "{{CreateEmployeeFirst.request.body.$.email}}",
+  "phone": "0900999999"
+}

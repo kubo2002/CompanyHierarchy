@@ -1,0 +1,10 @@
+# @name CreateNodeInvalidType
+## TEST-EXPECT-STATUS: [400]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Invalid Type Node",
+  "code": "INVTYPE-{{$guid}}",
+  "type": 999
+}

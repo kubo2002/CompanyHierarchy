@@ -1,0 +1,12 @@
+# @name CreateEmployee
+## TEST-EXPECT-STATUS: [200]
+POST {{ApiBaseUrl}}/api/createEmployee
+Content-Type: application/json
+
+{
+  "firstName": "Jakub",
+  "lastName": "Gubany",
+  "email": "jakub.gubany+{{$guid}}@test.sk",
+  "phone": "0900123456",
+  "academicTitle": "Ing."
+}

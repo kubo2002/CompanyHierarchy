@@ -1,0 +1,44 @@
+# @name CreateCompany
+## TEST-EXPECT-STATUS: [200,201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Company A",
+  "code": "COMP-{{$guid}}",
+  "type": 1
+}
+
+###
+
+# @name CreateDivision
+## TEST-EXPECT-STATUS: [200,201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Division A",
+  "code": "DIV-{{$guid}}",
+  "type": 2,
+  "parentId": "{{CreateCompany.response.body.$.data.id}}"
+}
+
+###
+
+# @name CreateProject
+## TEST-EXPECT-STATUS: [200,201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Project A",
+  "code": "Pro-{{$guid}}",
+  "type": 3,
+  "parentId": "{{CreateDivision.response.body.$.data.id}}"
+}
+
+###
+
+# @name GetCompanyTree
+## TEST-EXPECT-STATUS: [200]
+GET {{ApiBaseUrl}}/api/nodes/{{CreateCompany.response.body.$.data.id}}/tree

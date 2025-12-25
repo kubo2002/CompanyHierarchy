@@ -1,0 +1,10 @@
+# @name CreateNodeMissingName
+## TEST-EXPECT-STATUS: [400]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "",
+  "code": "IT-{{$guid}}",
+  "type": 1
+}

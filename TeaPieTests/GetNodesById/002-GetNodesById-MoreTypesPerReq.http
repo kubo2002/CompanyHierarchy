@@ -1,0 +1,27 @@
+# @name CreateDivision
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Division A",
+  "code": "DIV-{{$guid}}",
+  "type": 2
+}
+
+###
+
+# @name CreateProject
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Project A",
+  "code": "PROJ-{{$guid}}",
+  "type": 3
+}
+
+###
+
+# @name GetDivisionAndProjects
+## TEST-EXPECT-STATUS: [200]
+GET {{ApiBaseUrl}}/api/nodes/by-type?types=2,3

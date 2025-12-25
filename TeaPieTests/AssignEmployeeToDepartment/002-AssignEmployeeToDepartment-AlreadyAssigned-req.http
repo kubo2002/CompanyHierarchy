@@ -1,0 +1,61 @@
+# @name CreateEmployee
+## TEST-EXPECT-STATUS: [200]
+POST {{ApiBaseUrl}}/api/createEmployee
+Content-Type: application/json
+
+{
+  "firstName": "Peter",
+  "lastName": "Mrkvicka",
+  "email": "emp-{{$guid}}@test.sk",
+  "phone": "0900111111"
+}
+
+###
+
+# @name CreateDepartmentA
+## TEST-EXPECT-STATUS: [200, 201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "HR Department",
+  "code": "HR-{{$guid}}",
+  "type": 4
+}
+
+###
+
+# @name CreateDepartmentB
+## TEST-EXPECT-STATUS: [200, 201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Finance Department",
+  "code": "FIN-{{$guid}}",
+  "type": 4
+}
+
+###
+
+# @name FirstAssign
+## TEST-EXPECT-STATUS: [200]
+POST {{ApiBaseUrl}}/api/employees/assign-employee
+Content-Type: application/json
+
+{
+  "nodeId": "{{CreateDepartmentA.response.body.$.data.id}}",
+  "employeeId": "{{CreateEmployee.response.body.$.data}}"
+}
+
+###
+
+# @name SecondAssign
+## TEST-EXPECT-STATUS: [409]
+POST {{ApiBaseUrl}}/api/employees/assign-employee
+Content-Type: application/json
+
+{
+  "nodeId": "{{CreateDepartmentB.response.body.$.data.id}}",
+  "employeeId": "{{CreateEmployee.response.body.$.data}}"
+}

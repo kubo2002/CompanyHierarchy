@@ -1,0 +1,3 @@
+# @name GetNonExistingType
+## TEST-EXPECT-STATUS: [200]
+GET {{ApiBaseUrl}}/api/nodes/by-type?types=99

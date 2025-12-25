@@ -50,20 +50,28 @@ namespace CompanyManagement.Application.UseCases
         /// <param name="employeeId">Identifikator zamestnanca.</param>
         public async Task ExecuteAsync(Guid employeeId)
         {
-            // Odstranenie vsetkych priradeni zamestnanca k oddeleniam
-            await _departmentRepository.RemoveByEmployeeIdAsync(employeeId);
-
-            // Odobratie manazerskej role zamestnanca zo vsetkych uzlov
-            await _nodeRepository.UnassignManagerAsync(employeeId);
-
             // Nacitanie zamestnanca z databazy
             var employee = await _employeeRepository.GetByIdAsync(employeeId);
 
             // Ak zamestnanec neexistuje, operacia sa ukonci
             if (employee == null)
             {
-                return;
+                throw new KeyNotFoundException("Employee not found."); 
             }
+            try {
+                // V tomto pripade si len pomaham s RemoveByEmployeeIdAsync ale ak vrati chybu tak nech
+                // to nevypne cely proces mazania zamestnanca
+                //
+                // Odstranenie vsetkych priradeni zamestnanca k oddeleniam
+                await _departmentRepository.RemoveByEmployeeIdAsync(employeeId);
+            } catch (KeyNotFoundException ex) 
+            {
+                
+            }
+           
+
+            // Odobratie manazerskej role zamestnanca zo vsetkych uzlov
+            await _nodeRepository.UnassignManagerAsync(employeeId);
 
             // Odstranenie zamestnanca z databazy
             await _employeeRepository.DeleteAsync(employee);

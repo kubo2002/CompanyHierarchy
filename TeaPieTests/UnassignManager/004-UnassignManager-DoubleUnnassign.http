@@ -1,0 +1,55 @@
+# @name CreateEmployee
+POST {{ApiBaseUrl}}/api/createEmployee
+Content-Type: application/json
+
+{
+  "firstName": "Martin",
+  "lastName": "Boss",
+  "email": "boss-{{$guid}}@test.sk",
+  "phone": "0900999999"
+}
+
+###
+
+# @name CreateDepartment
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Managed Department",
+  "code": "MNG-{{$guid}}",
+  "type": 4
+}
+
+###
+
+# @name AssignManager
+POST {{ApiBaseUrl}}/api/employees/assign-manager
+Content-Type: application/json
+
+{
+  "nodeId": "{{CreateDepartment.response.body.$.data.id}}",
+  "employeeId": "{{CreateEmployee.response.body.$.data}}"
+}
+
+###
+
+# @name UnassignManager
+## TEST-EXPECT-STATUS: [200]
+POST {{ApiBaseUrl}}/api/employees/unassign-manager
+Content-Type: application/json
+
+{
+  "nodeId": "{{CreateDepartment.response.body.$.data.id}}"
+}
+
+###
+
+# @name SecondUnassignManager
+## TEST-EXPECT-STATUS: [400,409]
+POST {{ApiBaseUrl}}/api/employees/unassign-manager
+Content-Type: application/json
+
+{
+  "nodeId": "{{CreateDepartment.response.body.$.data.id}}"
+}

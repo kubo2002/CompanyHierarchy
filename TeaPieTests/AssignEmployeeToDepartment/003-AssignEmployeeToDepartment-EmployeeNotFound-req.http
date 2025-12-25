@@ -1,0 +1,22 @@
+# @name CreateDepartment
+## TEST-EXPECT-STATUS: [200, 201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Marketing Department",
+  "code": "MKT-{{$guid}}",
+  "type": 4
+}
+
+###
+
+# @name AssignEmployeeNotFound
+## TEST-EXPECT-STATUS: [404]
+POST {{ApiBaseUrl}}/api/employees/assign-employee
+Content-Type: application/json
+
+{
+  "nodeId": "{{CreateDepartment.response.body.$.data.id}}",
+  "employeeId": "{{$guid}}"
+}

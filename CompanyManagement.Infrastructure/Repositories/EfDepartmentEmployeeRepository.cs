@@ -2,6 +2,7 @@
 using CompanyManagement.Domain.Entities;
 using CompanyManagement.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace CompanyManagement.Infrastructure.Repositories
 {
@@ -15,6 +16,7 @@ namespace CompanyManagement.Infrastructure.Repositories
         /// Databazovy kontext aplikacie.
         /// </summary>
         private readonly ManagementDbContext _dbContext;
+
 
         /// <summary>
         /// Inicializuje repozitar s databazovym kontextom.
@@ -61,16 +63,15 @@ namespace CompanyManagement.Infrastructure.Repositories
         /// <param name="employeeId">Identifikator zamestnanca.</param>
         public async Task RemoveByEmployeeIdAsync(Guid employeeId)
         {
-            var links = await _dbContext.DepartmentEmployees
-                .Where(de => de.EmployeeId == employeeId)
-                .ToListAsync();
+            var link = await _dbContext.DepartmentEmployees.FirstOrDefaultAsync(de => de.EmployeeId == employeeId);
 
-            if (links.Count == 0)
+            if (link == null)
             {
-                throw new ArgumentException("Employee does not exist.");
+                throw new ArgumentException("Employee is not assigned to any department.");
+            
             }
 
-            _dbContext.DepartmentEmployees.RemoveRange(links);
+            _dbContext.DepartmentEmployees.Remove(link);
             await _dbContext.SaveChangesAsync();
         }
 

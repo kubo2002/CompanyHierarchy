@@ -1,0 +1,8 @@
+# @name UnassignManager_NodeNotFound
+## TEST-EXPECT-STATUS: [404]
+POST {{ApiBaseUrl}}/api/employees/unassign-manager
+Content-Type: application/json
+
+{
+  "nodeId": "{{$guid}}"
+}

@@ -1,0 +1,26 @@
+# @name CreateCompany
+## TEST-EXPECT-STATUS: [200, 201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Company A",
+  "code": "COMP",
+  "type": 1,
+  "parentId": null
+}
+
+###
+
+# @name CreateDivision
+## TEST-EXPECT-STATUS: [200, 201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Division B",
+  "code": "DIV",
+  "type": 2,
+  "parentId": "{{CreateCompany.response.body.$.data.id}}"
+}
+

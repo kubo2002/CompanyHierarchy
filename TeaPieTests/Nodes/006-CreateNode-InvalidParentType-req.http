@@ -1,0 +1,24 @@
+# @name CreateDivisionNode
+## TEST-EXPECT-STATUS: [200, 201]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Team Node",
+  "code": "TEAM-{{$guid}}",
+  "type": 2
+}
+
+###
+
+# @name CreateDepartmentUnderTeam
+## TEST-EXPECT-STATUS: [400]
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "Department Under Team",
+  "code": "BADPARENT-{{$guid}}",
+  "type": 1,
+  "parentId": "{{CreateDivisionNode.response.body.$.data}}"
+}

@@ -1,5 +1,6 @@
 ﻿using CompanyManagement.Application.Abstractions.Repositories;
 using CompanyManagement.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace CompanyManagement.Application.UseCases
 {
@@ -15,14 +16,20 @@ namespace CompanyManagement.Application.UseCases
         private readonly IDepartmentEmployeeRepository _departmentEmployeeRepository;
 
         /// <summary>
+        /// Repozitar pre pracu s uzlami organizacnej hierarchie.
+        /// </summary>
+        private readonly INodeRepository _nodeRepository;
+
+        /// <summary>
         /// Inicializuje use case s potrebnym repozitarom.
         /// </summary>
         /// <param name="departmentEmployeeRepository">
         /// Repozitar pre priradenia zamestnancov k oddeleniam.
         /// </param>
-        public GetEmployeesByDepartment(IDepartmentEmployeeRepository departmentEmployeeRepository)
+        public GetEmployeesByDepartment(IDepartmentEmployeeRepository departmentEmployeeRepository, INodeRepository nodeRepository)
         {
             _departmentEmployeeRepository = departmentEmployeeRepository;
+            _nodeRepository = nodeRepository;
         }
 
         /// <summary>
@@ -34,6 +41,17 @@ namespace CompanyManagement.Application.UseCases
         /// </returns>
         public async Task<List<Employee>> ExecuteAsync(Guid departmentId)
         {
+            var exists = await _nodeRepository.GetByIdAsync(departmentId);
+
+            if (exists == null)
+            {
+                throw new KeyNotFoundException("Department not found");
+            }
+
+            if ((int)exists.Type != 4) 
+            {
+                throw new ValidationException("The specified node is not a department");
+            }
             return await _departmentEmployeeRepository.GetEmployeesByDepartmentIdAsync(departmentId);
         }
     }

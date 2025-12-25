@@ -1,0 +1,18 @@
+# @name CreateEmployee
+## TEST-EXPECT-STATUS: [200]
+POST {{ApiBaseUrl}}/api/createEmployee
+Content-Type: application/json
+
+{
+  "firstName": "Adam",
+  "lastName": "NoDept",
+  "email": "adam-{{$guid}}@test.sk",
+  "phone": "0900444444",
+  "academicTitle": null
+}
+
+###
+
+# @name UnassignWithoutAssign
+## TEST-EXPECT-STATUS: [400]
+POST {{ApiBaseUrl}}/api/employees/{{CreateEmployee.response.body.$.data}}/unassign
