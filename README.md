@@ -9,6 +9,13 @@ hierarchie organizačných jednotiek, priraďovanie zamestnancov a správu vedú
 
 ## Používateľská príručka
 
+Podrobná používateľská príručka REST API je dostupná v samostatných
+Markdown dokumentoch v priečinku `documentation`.
+
+- [Prehľad API](documentation/api-guide.md)
+- [Nodes API](documentation/nodes.md)
+- [Employees API](documentation/employees.md)
+
 ## Použité technológie
 
 - .NET 10 (ASP.NET Core)
