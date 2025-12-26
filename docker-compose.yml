@@ -10,3 +10,4 @@ services:
       MSSQL_SA_PASSWORD: "yourStrong(!)Password"
     ports:
       - "1433:1433"
+
