@@ -16,13 +16,89 @@ API používa štandardné HTTP stavové kódy:
 - 404 – požadovaný zdroj neexistuje
 - 409 - požadovany zdroj už exsituje
 - 500 – interná chyba servera
+---
+## Príklad postupu vytvárania organizačnej hierarchie
+### 1. Vytvorenie Company uzla `CreateNode`
 
-## Konvencie
+Company uzol je koreňom celej hierarchie a nemá rodičovský uzol (`parentId` = null).
+```json
+{
+  "name": "Company A",
+  "code": "COMP",
+  "type": 1,
+  "parentId": null
+}
+```
 
-API používa REST štýl komunikácie
-- Endpointy používajú HTTP metódy GET, POST, PUT a DELETE
-- Názvy endpointov sú v množnom čísle (napr. `/api/employees`)
-- Vstupné a výstupné dáta sú prenášané vo formáte JSON
+Odpoveď obsahuje `nodeId` vytvoreného Company uzla. Toto ID je potrebné si uložiť
+pre ďalšie kroky.
+
+---
+### 2. Získanie ID Company uzla `ShowNodesByType`
+Ak ID nebolo uložené z odpovede, je možné ho získať pomocou endpointu
+na zobrazenie uzlov podľa typu:
+
+Query Parameters
+`types` = 1
+
+Z odpovede použite hodnotu id uzla Company A.
+---
+### 3. Vytvorenie Division uzla (potomok Company) `CreateNode`
+
+Division uzol musí mať parentId odkazujúci na existujúci Company uzol.
+
+```json
+{
+  "name": "Division A",
+  "code": "DIV",
+  "type": 2,
+  "parentId": "<CompanyId>"
+}
+```
+---
+### 4.  Získanie ID Division uzla `ShowNodesByType`
+
+Query Parameters
+`types` = 2
+
+---
+
+### 5. Vytvorenie Project uzla (potomok Division) `CreateNode`
+
+Project uzol musí mať parentId odkazujúci na existujúci Division uzol.
+
+```json
+{
+  "name": "Project A",
+  "code": "PROJ",
+  "type": 3,
+  "parentId": "<DivisionId>"
+}
+```
+---
+### 6. Získanie ID Project uzla `ShowNodesByType`
+
+Query Parameters
+`types` = 3
+
+---
+
+### 7. Vytvorenie Department uzla (potomok Project) `CreateNode`
+
+Department uzol musí mať parentId odkazujúci na existujúci Project uzol.
+
+```json
+{
+  "name": "Department A",
+  "code": "DEPA",
+  "type": 4,
+  "parentId": "<ProjectId>"
+}
+```
+---
+
+## Cyklus v hierarchii
+Každý uzol, môže mať ľubovoľne mnoho potomkov. V projekte je kladený dôraz na jasnú následnosť uzlov podľa pravidla `Company -> Division -> Project -> Department`. Vytváranie a aktualizácia uzlov nedovoľuje zmenu `parentId` na ľubovoľný uzol z hierarchie. `parentId` je možné zmeniť len na uzol, ktorý je oficiálne priamym predchodcom aktuálneho uzla, napríklad `Project` môže pomocou `parentId` odkazovať len na uzly typu **Division**.
 
 ## Dokumentácia endpointov
 
