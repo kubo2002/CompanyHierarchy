@@ -42,34 +42,42 @@ Markdown dokumentoch v priečinku `documentation`.
 - `TeaPieTests` – HTTP testy API
 
 ---
-
+## Naklonovanie projektu
+```bash
+git clone <repoUrl>
+```
 ## Nastavenie databázy
 
 Projekt využíva SQL Server spustený v Docker kontajneri.
 Databáza a všetky tabuľky sú vytvorené manuálne pomocou jedného SQL skriptu.
 
 ### 1. Spustenie databázy
+V koreňovom priečinku projektu : 
 ```bash
 docker-compose up -d
 ```
 
 ### 2. Pripojenie na SQL Server
+V ľubovoľnom SQL Manageri : 
 - Server: `localhost,1433`
 - Používateľ: `sa`
 - Heslo: `yourStrong(!)Password`
 - Server Certificate: `True`
+  
 Connection string : 
 ```bash
 Server=localhost,1433;User Id=sa;Password=yourStrong(!)Password;Encrypt=True;TrustServerCertificate=True;
 ```
 
 ### 3. Inicializácia databázy
+V SQL Manageri :
 - Otvorte súbor `database/init.sql`
 - Spustite skript v SQL manageri
 ---
 ## Spustenie aplikácie
 
 ###  1. Spustenie projektu v CLI
+V koreňovom priečinku projektu :
 ```bash
 dotnet run --project CompanyManagement
 ```
@@ -81,6 +89,7 @@ http://localhost:5235/scalar
 ## Testovanie
 
 ### Unit testy (xUnit)
+V koreňovom priečinku projektu :
 ```bash
 dotnet test
 ```
@@ -94,7 +103,6 @@ dotnet tool install --global teapie
 teapie --version
 ```
 - **Spustenie TeaPie testov v priečinku `./TeaPieTests`**
-
 ```bash
 teapie init
 teapie test .
