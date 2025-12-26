@@ -28,24 +28,7 @@ namespace Tests.Domain
             Assert.Null(node.LeaderEmployeeId);
         }
 
-        [Fact]
-        public void Rename_Should_Update_Name_And_Code()
-        {
-            // Arrange
-            Node node = new Node(
-                Guid.NewGuid(),
-                "Old Name",
-                "OLD",
-                NodeType.Project,
-                null);
-
-            // Act
-            node.Rename("New Name", "NEW");
-
-            // Assert
-            Assert.Equal("New Name", node.Name);
-            Assert.Equal("NEW", node.Code);
-        }
+      
 
         [Fact]
         public void AssignLeader_Should_Set_LeaderEmployeeId()

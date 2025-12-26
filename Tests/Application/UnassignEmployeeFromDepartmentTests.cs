@@ -33,7 +33,7 @@ namespace Tests.Application
             var useCase = new UnassignEmployeeFromDepartment(repo);
 
             // Act
-            await useCase.ExecuteAsync(departmentId, employeeId);
+            await useCase.ExecuteAsync(employeeId);
 
             // Assert
             Assert.Empty(db.DepartmentEmployees);
@@ -59,7 +59,7 @@ namespace Tests.Application
             // Act
 
             // Assert
-            await Assert.ThrowsAsync<ArgumentException>(() => useCase.ExecuteAsync(departmentId, employeeId));
+            await Assert.ThrowsAsync<ArgumentException>(() => useCase.ExecuteAsync(employeeId));
         }
 
         [Fact]
@@ -96,7 +96,7 @@ namespace Tests.Application
             var useCase = new UnassignEmployeeFromDepartment(repo);
 
             // Act
-            await useCase.ExecuteAsync(departmentId, employee1Id);
+            await useCase.ExecuteAsync(employee1Id);
 
             // Assert
             var remaining = db.DepartmentEmployees

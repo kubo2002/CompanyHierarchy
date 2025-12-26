@@ -9,7 +9,7 @@ namespace CompanyManagement.Api.Controllers
     /// Deleguje spracovanie na prislusny use case.
     /// </summary>
     [ApiController]
-    [Route("api/departments")]
+    [Route("api/employees")]
     public class UnassignEmployeeFromDepartmentController : ControllerBase
     {
         /// <summary>
@@ -36,10 +36,10 @@ namespace CompanyManagement.Api.Controllers
         /// <returns>
         /// HTTP 200 OK po uspesnom odobrati zamestnanca.
         /// </returns>
-        [HttpPost("{departmentId:guid}/unassign-employee/{employeeId:guid}")]
-        public async Task<IActionResult> Unassign(Guid departmentId, Guid employeeId)
+        [HttpPost("{employeeId:guid}/unassign")]
+        public async Task<IActionResult> Unassign(Guid employeeId)
         {
-            await _unassignEmployee.ExecuteAsync(departmentId, employeeId);
+            await _unassignEmployee.ExecuteAsync(employeeId);
 
             return Ok(ApiResponse<object>.Ok(null,"Employee unassigned from department"));
         }

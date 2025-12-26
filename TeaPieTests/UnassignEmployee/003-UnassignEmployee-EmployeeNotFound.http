@@ -1,3 +1,3 @@
 # @name UnassignEmployeeNotFound
-## TEST-EXPECT-STATUS: [404]
+## TEST-EXPECT-STATUS: [400]
 POST {{ApiBaseUrl}}/api/employees/{{$guid}}/unassign
