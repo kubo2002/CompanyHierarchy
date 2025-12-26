@@ -69,15 +69,11 @@ Server=localhost,1433;User Id=sa;Password=yourStrong(!)Password;Encrypt=True;Tru
 ---
 ## Spustenie aplikácie
 
-###  1. Uistite sa, že `CompanyManagement` je nastavený ako startup project.
-###  2. Spustite API 
-V pripade spustenia API napríklad v prostredí Visual Studio je potrebné prepnúť režim z **Debug** do **Release**
-
-Spustenie cez Command line : 
+###  1. Spustenie projektu v CLI
 ```bash
 dotnet run --project CompanyManagement
 ```
-###  3. Otvorte API dokumentáciu
+###  2. Otvorte API dokumentáciu
 ```bash
 http://localhost:5235/scalar
 ```
