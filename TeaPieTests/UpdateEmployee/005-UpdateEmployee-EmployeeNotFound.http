@@ -1,0 +1,9 @@
+# @name UpdateEmployee_NotFound
+## TEST-EXPECT-STATUS: [404]
+PUT {{ApiBaseUrl}}/api/employees/update
+Content-Type: application/json
+
+{
+  "id": "{{$guid}}",
+  "firstName": "Does not matter"
+}

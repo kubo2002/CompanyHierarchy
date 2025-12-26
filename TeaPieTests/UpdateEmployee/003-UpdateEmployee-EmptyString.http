@@ -1,0 +1,22 @@
+# @name CreateEmployee
+POST {{ApiBaseUrl}}/api/createEmployee
+Content-Type: application/json
+
+{
+  "firstName": "Eva",
+  "lastName": "Nova",
+  "email": "eva-{{$guid}}@test.sk",
+  "phone": "0900111111"
+}
+
+###
+
+# @name UpdateEmployee_InvalidFirstName
+## TEST-EXPECT-STATUS: [200]
+PUT {{ApiBaseUrl}}/api/employees/update
+Content-Type: application/json
+
+{
+  "employeeId": "{{CreateEmployee.response.body.$.data}}",
+  "firstName": ""
+}

@@ -1,0 +1,8 @@
+# @name UpdateEmployee_NoChanges
+## TEST-EXPECT-STATUS: [400]
+PUT {{ApiBaseUrl}}/api/employees/update
+Content-Type: application/json
+
+{
+  "employeeId": "{{CreateEmployee.response.body.$.data}}"
+}

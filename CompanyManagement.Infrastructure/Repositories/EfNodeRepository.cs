@@ -189,5 +189,14 @@ namespace CompanyManagement.Infrastructure.Repositories
          
             await _dbContext.SaveChangesAsync();
         }
+
+        /// <summary>
+        /// Aktuailizuje parametre uzla v databaze.
+        /// </summary>
+        public async Task UpdateNodeParametersAsync(Node node)
+        {
+            _dbContext.Nodes.Update(node);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

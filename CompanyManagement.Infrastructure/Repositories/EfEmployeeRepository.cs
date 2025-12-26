@@ -69,5 +69,14 @@ namespace CompanyManagement.Infrastructure.Repositories
             _dbContext.Employees.Remove(employee);
             await _dbContext.SaveChangesAsync();
         }
+
+        /// <summary>
+        /// Aktualizuje parametre existujuceho zamestnanca v databaze.
+        /// </summary>
+        public async Task UpdateEmployeeParametersAsync(Employee employee)
+        {
+            _dbContext.Employees.Update(employee);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
