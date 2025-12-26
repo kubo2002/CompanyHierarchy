@@ -54,17 +54,13 @@ docker-compose up -d
 ```
 
 ### 2. Pripojenie na SQL Server
-- Názov databázy: `CompanyManagementDb`
 - Server: `localhost,1433`
 - Používateľ: `sa`
-- Heslo: `StrongPass!123`
+- Heslo: `yourStrong(!)Password`
 - Server Certificate: `True`
-
-Alternatívne sa môžte pripojiť pomocou connection stringu uvedenom v `CompanyManagement/appsettings.json`
-
 Connection string : 
 ```bash
-Server=localhost,1433;Database=CompanyManagementDb;User Id=sa;Password=StrongPass!123;TrustServerCertificate=True
+Server=localhost,1433;User Id=sa;Password=yourStrong(!)Password;Encrypt=True;TrustServerCertificate=True;
 ```
 
 ### 3. Inicializácia databázy
@@ -73,11 +69,15 @@ Server=localhost,1433;Database=CompanyManagementDb;User Id=sa;Password=StrongPas
 ---
 ## Spustenie aplikácie
 
-###  1. Spustite API 
+###  1. Uistite sa, že `CompanyManagement` je nastavený ako startup project.
+###  2. Spustite API 
+V pripade spustenia API napríklad v prostredí Visual Studio je potrebné prepnúť režim z **Debug** do **Release**
+
+Spustenie cez Command line : 
 ```bash
 dotnet run --project CompanyManagement
 ```
-###  2. Otvorte API dokumentáciu
+###  3. Otvorte API dokumentáciu
 ```bash
 http://localhost:5235/scalar
 ```
@@ -100,6 +100,7 @@ teapie --version
 - **Spustenie TeaPie testov v priečinku `./TeaPieTests`**
 
 ```bash
+teapie init
 teapie test .
 ```
 ---
