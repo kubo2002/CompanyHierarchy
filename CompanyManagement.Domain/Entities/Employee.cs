@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace CompanyManagement.Domain.Entities
@@ -35,6 +36,31 @@ namespace CompanyManagement.Domain.Entities
             LastName = lastName;
             Email = email;
             Phone = phone;
+            AcademicTitle = academicTitle;
+        }
+
+        public void UpdateFirstName(string firstName)
+        {
+            FirstName = firstName;
+        }
+
+        public void UpdateLastName(string lastName)
+        {
+            LastName = lastName;
+        }
+
+        public void UpdateEmail(string email)
+        {
+            Email = email;
+        }
+
+        public void UpdatePhone(string? phone)
+        {
+            Phone = phone;
+        }
+
+        public void UpdateAcademicTitle(string? academicTitle)
+        {
             AcademicTitle = academicTitle;
         }
     }

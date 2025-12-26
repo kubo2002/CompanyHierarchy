@@ -97,5 +97,10 @@ namespace CompanyManagement.Application.Abstractions.Repositories
         /// </summary>
         /// <param name="types">Kolekcia typov uzlov.</param>
         Task<List<Node>> GetByTypesAsync(IEnumerable<NodeType> types);
+
+        /// <summary>
+        /// Aktualizuje parametre uzla bez nutnosti nahravat celu entitu.
+        /// </summary>
+        Task UpdateNodeParametersAsync(Node node);
     }
 }

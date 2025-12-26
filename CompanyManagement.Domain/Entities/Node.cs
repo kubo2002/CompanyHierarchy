@@ -39,17 +39,6 @@ namespace CompanyManagement.Domain.Entities
         }
 
         /// <summary>
-        /// Vykona aktualizaciu nazvu a kodu uzla.
-        /// </summary>
-        /// <param name="name">Meno firmy.</param>
-        /// <param name="code">Kod firmy</param>
-        public void Rename(string name, string code)
-        {
-            Name = name;
-            Code = code;
-        }
-
-        /// <summary>
         /// Priradi uzlu veduceho.
         /// </summary>
         /// <param name="employeeId">Unikatne ID zamestnanca.</param>
@@ -75,6 +64,30 @@ namespace CompanyManagement.Domain.Entities
             }
 
             LeaderEmployeeId = null;
+        }
+
+        /// <summary>
+        /// Zmeni rodicovsky uzol.
+        /// </summary>
+        public void ChangeParent(Guid? parentId)
+        {
+            ParentId = parentId;
+        }
+
+        /// <summary>
+        /// aktualizuje nazov uzla.
+        /// </summary>
+        public void UpdateName(string name)
+        {
+            Name = name;
+        }
+
+        /// <summary>
+        /// Aktualizuje kod uzla.
+        /// </summary>
+        public void UpdateCode(string code)
+        {
+            Code = code;
         }
     }
 }

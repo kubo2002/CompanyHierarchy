@@ -66,6 +66,8 @@ builder.Services.AddScoped<DeleteNode>();
 builder.Services.AddScoped<DeleteEmployee>();
 builder.Services.AddScoped<UnassignEmployeeFromDepartment>();
 builder.Services.AddScoped<GetEmployeesByDepartment>();
+builder.Services.AddScoped<UpdateNode>();
+builder.Services.AddScoped<UpdateEmployee>();
 
 var app = builder.Build();
 
@@ -110,8 +112,6 @@ if (app.Environment.IsDevelopment())
 
 // Globalny handler vynimiek
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

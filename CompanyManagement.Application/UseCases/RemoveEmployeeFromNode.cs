@@ -34,23 +34,9 @@ namespace CompanyManagement.Application.UseCases
         /// </remarks>
         public async Task ExecuteAsync(RemoveEmployeeFromNodeRequest request)
         {
-            var node = await _nodeRepository.GetByIdAsync(request.NodeId)
-                ?? throw new ArgumentException("Node not found");
-
+           
             var employee = await _employeeRepository.GetByIdAsync(request.EmployeeId)
                 ?? throw new ArgumentException("Employee not found");
-
-            if (node.Type != Domain.Enums.NodeType.Department)
-            {
-                throw new InvalidOperationException("Employees can only be removed from department nodes");
-            }
-
-            var isAssigned = await _nodeRepository.IsEmployeeAssignedToNodeAsync(node.Id, employee.Id);
-
-            if (!isAssigned)
-                return;
-
-            await _nodeRepository.RemoveEmployeeFromNodeAsync(node.Id, employee.Id);
         }
     }
 }

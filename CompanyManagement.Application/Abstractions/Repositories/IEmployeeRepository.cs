@@ -37,5 +37,10 @@ namespace CompanyManagement.Application.Abstractions.Repositories
         /// </summary>
         /// <param name="employee">Entita zamestnanca, ktora sa ma odstranit.</param>
         Task DeleteAsync(Employee employee);
+
+        /// <summary>
+        /// Aktualizuje informacie o zamestnancovi v databaze.
+        /// </summary>
+        Task UpdateEmployeeParametersAsync(Employee employee);
     }
 }

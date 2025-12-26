@@ -56,22 +56,20 @@ namespace CompanyManagement.Application.UseCases
             // Ak zamestnanec neexistuje, operacia sa ukonci
             if (employee == null)
             {
-                throw new KeyNotFoundException("Employee not found."); 
+                throw new KeyNotFoundException("Employee does not exists.");
             }
+
             try {
-                // V tomto pripade si len pomaham s RemoveByEmployeeIdAsync ale ak vrati chybu tak nech
-                // to nevypne cely proces mazania zamestnanca
-                //
                 // Odstranenie vsetkych priradeni zamestnanca k oddeleniam
                 await _departmentRepository.RemoveByEmployeeIdAsync(employeeId);
-            } catch (KeyNotFoundException ex) 
-            {
-                
+            } catch (ArgumentException ex) {
+              
             }
-           
 
             // Odobratie manazerskej role zamestnanca zo vsetkych uzlov
             await _nodeRepository.UnassignManagerAsync(employeeId);
+
+            
 
             // Odstranenie zamestnanca z databazy
             await _employeeRepository.DeleteAsync(employee);

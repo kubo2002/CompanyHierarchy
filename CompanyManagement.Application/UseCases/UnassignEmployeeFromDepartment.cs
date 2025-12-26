@@ -35,7 +35,7 @@ namespace CompanyManagement.Application.UseCases
         /// </summary>
         /// <param name="departmentId">Identifikator oddelenia.</param>
         /// <param name="employeeId">Identifikator zamestnanca.</param>
-        public async Task ExecuteAsync(Guid departmentId, Guid employeeId)
+        public async Task ExecuteAsync(Guid employeeId)
         {
             await _departmentEmployeeRepository.RemoveByEmployeeIdAsync(employeeId);
         }
