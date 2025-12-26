@@ -7,7 +7,7 @@ hierarchie organizačných jednotiek, priraďovanie zamestnancov a správu vedú
 
 ---
 
-## Používateľská príručka
+## Dokumentácia
 
 Podrobná používateľská príručka REST API je dostupná v samostatných
 Markdown dokumentoch v priečinku `documentation`.
