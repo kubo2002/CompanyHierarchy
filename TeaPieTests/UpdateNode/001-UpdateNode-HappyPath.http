@@ -1,0 +1,22 @@
+# @name CreateDepartment
+POST {{ApiBaseUrl}}/api/nodes
+Content-Type: application/json
+
+{
+  "name": "HR Department",
+  "code": "HR-{{$guid}}",
+  "type": 4
+}
+
+###
+
+# @name UpdateNode
+## TEST-EXPECT-STATUS: [200]
+PUT {{ApiBaseUrl}}/api/nodes/update
+Content-Type: application/json
+
+{
+  "nodeId": "{{CreateDepartment.response.body.$.data.id}}",
+  "name": "New Node",
+  "code": "NEW"
+}

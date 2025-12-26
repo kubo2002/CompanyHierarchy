@@ -1,0 +1,9 @@
+# @name UpdateNode_NotFound
+## TEST-EXPECT-STATUS: [404]
+PUT {{ApiBaseUrl}}/api/nodes/update
+Content-Type: application/json
+
+{
+  "nodeId": "{{$guid}}",
+  "name": "Does not matter"
+}
