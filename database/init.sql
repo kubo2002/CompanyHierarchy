@@ -1,13 +1,10 @@
 IF DB_ID('CompanyManagementDb') IS NULL
 BEGIN
     CREATE DATABASE CompanyManagementDb;
-END
-GO
-
-/*Pouzi vyhradne CompanyManagementDb databazu.*/
+END;
 
 USE CompanyManagementDb;
-GO
+
 CREATE TABLE [dbo].[Employees] (
     [Id] UNIQUEIDENTIFIER NOT NULL,
     [FirstName] NVARCHAR(100) NOT NULL,
@@ -17,7 +14,7 @@ CREATE TABLE [dbo].[Employees] (
     [Phone] NVARCHAR(255) NULL
     CONSTRAINT [PK_Employee] PRIMARY KEY CLUSTERED ([Id] ASC)
 ) ON [PRIMARY];
-GO
+
 
 CREATE TABLE dbo.Nodes (
     Id UNIQUEIDENTIFIER NOT NULL,
@@ -38,7 +35,7 @@ CREATE TABLE dbo.Nodes (
         REFERENCES dbo.Employees (Id)
         ON DELETE SET NULL
 );
-GO
+
 
 
 CREATE TABLE [dbo].[DepartmentEmployees] (
@@ -58,4 +55,3 @@ CREATE TABLE [dbo].[DepartmentEmployees] (
         REFERENCES [dbo].[Employees] ([Id])
         ON DELETE CASCADE
 );
-GO
