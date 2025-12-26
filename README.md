@@ -94,7 +94,7 @@ V koreňovom priečinku projektu :
 dotnet test
 ```
 
-### HTTP testy
+### Testy endpointov
 V priečinku `TeaPieTests` sú pripravené HTTP súbory pre testovanie API pomocou nástroja **TeaPie**.
 
 - **Inštalácia TeaPie (ak ešte nie je nainštalované)**
